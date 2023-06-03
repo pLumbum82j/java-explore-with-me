@@ -1,5 +1,6 @@
 package ru.practicum.exp.stat.serv.mappers;
 
+import lombok.experimental.UtilityClass;
 import ru.practicum.exp.stat.dto.HitDto;
 import ru.practicum.exp.stat.serv.models.Hit;
 import ru.practicum.exp.stat.serv.util.DateFormatter;
@@ -7,6 +8,7 @@ import ru.practicum.exp.stat.serv.util.DateFormatter;
 /**
  * Класс HitMapper для преобразования HitDto в Hit
  */
+@UtilityClass
 public class HitMapper {
 
     /**

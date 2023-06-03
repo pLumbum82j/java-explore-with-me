@@ -24,7 +24,7 @@ public class HitController {
      */
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public void createHit(@Validated @RequestBody HitDto hitDto) {
+    public void create(@Validated @RequestBody HitDto hitDto) {
         hitService.create(hitDto);
     }
 }

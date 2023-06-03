@@ -30,10 +30,10 @@ public class StatsController {
      * @return Сформированный список статистики по посещениям
      */
     @GetMapping
-    public List<ViewStatsDto> getStats(@RequestParam String start,
-                                       @RequestParam String end,
-                                       @RequestParam(required = false) List<String> uris,
-                                       @RequestParam(defaultValue = "false") Boolean unique) {
+    public List<ViewStatsDto> get(@RequestParam String start,
+                                  @RequestParam String end,
+                                  @RequestParam(required = false) List<String> uris,
+                                  @RequestParam(defaultValue = "false") Boolean unique) {
         return statService.get(start, end, uris, unique);
     }
 }
