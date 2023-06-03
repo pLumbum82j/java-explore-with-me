@@ -7,6 +7,9 @@ import org.springframework.web.bind.annotation.*;
 import ru.practicum.exp.stat.dto.HitDto;
 import ru.practicum.exp.stat.serv.services.HitService;
 
+/**
+ * Класс HitController по энпоинту hit
+ */
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/hit")
@@ -14,9 +17,14 @@ public class HitController {
 
     private final HitService hitService;
 
+    /**
+     * Метод (эндпоинт) создания запроса Hit
+     *
+     * @param hitDto Объект запроса hit
+     */
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public void addHit(@Validated @RequestBody HitDto hitDto) {
+    public void createHit(@Validated @RequestBody HitDto hitDto) {
         hitService.create(hitDto);
     }
 }

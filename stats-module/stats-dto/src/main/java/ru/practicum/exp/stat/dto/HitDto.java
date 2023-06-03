@@ -6,9 +6,13 @@ import lombok.Value;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
+/**
+ * Модель объекта Hit Data Transfer Object
+ */
 @Value
 @Builder
 public class HitDto {
+
     Long id;
     @NotBlank(message = "Поле \"app\" должно быть заполнено")
     String app;

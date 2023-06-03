@@ -13,6 +13,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Класс StatServiceImp для отработки логики запросов и логирования
+ */
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -29,19 +32,22 @@ public class StatServiceImp implements StatService {
             throw new ValidationDateException("Неверно заданы даты для поиска");
         }
         if (uris == null && !unique) {
+            log.info("Получение информации о запросе start: {}, end: {}", start, end);
             return statsRepository.findByDate(newStart, newEnd);
         }
-        if (uris == null && unique) {
+        if (uris == null) {
+            log.info("Получение информации о запросе start: {}, end: {}, uniq: {}", start, end, true);
             return statsRepository.findByDateAndUniqueIp(newStart, newEnd);
         }
         if (!uris.isEmpty() && !unique) {
+            log.info("Получение информации о запросе start: {}, end: {}, uris: {}", start, end, true);
             return statsRepository.findByDateAndUris(newStart, newEnd, uris);
         }
-        if (!uris.isEmpty() && unique) {
+        if (!uris.isEmpty()) {
+            log.info("Получение информации о запросе start: {}, end: {}, unique: {}, uris: {}", start, end, true, true);
             return statsRepository.findByDateAndUrisWithUniqueIp(newStart, newEnd, uris);
         }
-        log.info("Получение информации о запросе " + uris);
+        log.info("Получение информации о запросе start:{}, end {}", start, end);
         return new ArrayList<>();
     }
-
 }

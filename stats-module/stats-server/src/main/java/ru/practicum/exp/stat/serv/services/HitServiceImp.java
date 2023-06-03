@@ -9,6 +9,9 @@ import ru.practicum.exp.stat.serv.mappers.HitMapper;
 import ru.practicum.exp.stat.serv.models.Hit;
 import ru.practicum.exp.stat.serv.repositories.HitRepository;
 
+/**
+ * Класс HitServiceImp для отработки логики запросов и логирования
+ */
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -19,8 +22,8 @@ public class HitServiceImp implements HitService {
     @Override
     @Transactional
     public void create(HitDto hitDto) {
-        log.info("Сохранение информации о запросе " + hitDto.getUri());
         Hit hit = HitMapper.toHit(hitDto);
+        log.info("Сохранение информации о запросе " + hitDto.getUri());
         hitRepository.save(hit);
     }
 }

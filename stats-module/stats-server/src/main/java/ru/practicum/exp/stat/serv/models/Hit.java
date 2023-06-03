@@ -1,10 +1,13 @@
 package ru.practicum.exp.stat.serv.models;
 
-import javax.persistence.*;
 import lombok.*;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
+/**
+ * Модель объекта Hit
+ */
 @Getter
 @Setter
 @Entity
@@ -15,13 +18,13 @@ import java.time.LocalDateTime;
 public class Hit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id; // Идентификатор записи
+    private Long id;
     @Column(name = "app")
-    private String app; // Идентификатор сервиса для которого записывается информация ewm-main-service
+    private String app;
     @Column(name = "uri")
-    private String uri; // URI для которого был осуществлен запрос  /events/1
+    private String uri;
     @Column(name = "ip")
-    private String ip; //IP-адрес пользователя, осуществившего запрос
+    private String ip;
     @Column(name = "time_stamp")
-    private LocalDateTime timestamp; // Дата и время, когда был совершен запрос к эндпоинту (в формате "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime timestamp;
 }
