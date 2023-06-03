@@ -1,13 +1,11 @@
 package ru.practicum.exp.stat.serv.controllers;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.practicum.exp.stat.dto.HitDto;
-import ru.practicum.exp.stat.serv.service.HitService;
+import ru.practicum.exp.stat.serv.services.HitService;
 
 @RestController
 @RequiredArgsConstructor
@@ -15,6 +13,8 @@ import ru.practicum.exp.stat.serv.service.HitService;
 public class HitController {
 
     private final HitService hitService;
+
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public void addHit(@Validated @RequestBody HitDto hitDto) {
         hitService.create(hitDto);

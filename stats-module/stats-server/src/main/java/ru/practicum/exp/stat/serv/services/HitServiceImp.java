@@ -1,13 +1,13 @@
-package ru.practicum.exp.stat.serv.service;
+package ru.practicum.exp.stat.serv.services;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.exp.stat.dto.HitDto;
-import ru.practicum.exp.stat.serv.mapper.HitMapper;
-import ru.practicum.exp.stat.serv.model.Hit;
-import ru.practicum.exp.stat.serv.repsitory.HitRepository;
+import ru.practicum.exp.stat.serv.mappers.HitMapper;
+import ru.practicum.exp.stat.serv.models.Hit;
+import ru.practicum.exp.stat.serv.repositories.HitRepository;
 
 @Slf4j
 @Service

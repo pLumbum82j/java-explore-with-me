@@ -1,8 +1,9 @@
 version: '3.8'
 services:
   stats-service:
-    build: ./stats-module/stats-server
-    container_name: stats-service-container
+    build: stats-module/stats-server
+    image: stats-server
+    container_name: stats-server
     ports:
       - "9090:9090"
     depends_on:
@@ -13,10 +14,8 @@ services:
       - POSTGRES_PASSWORD=admin
 
   stats-db:
-    image: postgres:15.1-alpine
-    container_name: stats-db-container
-    volumes:
-      - /var/lib/postgresql/data/
+    image: postgres:15.3-alpine
+    container_name: stats-db
     ports:
       - "6541:5432"
     environment:
@@ -25,8 +24,9 @@ services:
       - POSTGRES_PASSWORD=admin
 
   ewm-main-service:
-    build: ./ewm-main-service
-    container_name: main-service-container
+    build: main-service
+    image: main-service
+    container_name: main-service
     ports:
       - "8080:8080"
     depends_on:
@@ -37,10 +37,8 @@ services:
       - POSTGRES_PASSWORD=admin
 
   ewm-db:
-    image: postgres:15.1-alpine
-    container_name: ewm-db-container
-    volumes:
-      - /var/lib/postgresql/data/
+    image: postgres:15.3-alpine
+    container_name: ewm-db
     ports:
       - "6542:5432"
     environment:

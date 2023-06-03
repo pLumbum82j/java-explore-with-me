@@ -1,4 +1,4 @@
-package ru.practicum.exp.stat.serv.model;
+package ru.practicum.exp.stat.serv.models;
 
 import javax.persistence.*;
 import lombok.*;

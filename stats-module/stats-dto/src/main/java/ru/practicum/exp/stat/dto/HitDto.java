@@ -16,6 +16,6 @@ public class HitDto {
     String uri;
     @NotBlank(message = "Поле \"ip\" должно быть заполнено")
     String ip;
-    @Pattern(regexp = "\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}", message = "Invalid date format")
+    @Pattern(regexp = "\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}", message = "Неправильный формат даты и времени")
     String timestamp;
 }
