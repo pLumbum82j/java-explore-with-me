@@ -3,6 +3,7 @@ package ru.practicum.exp.stat.serv.services;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.exp.stat.dto.ViewStatsDto;
 import ru.practicum.exp.stat.serv.exceptions.ValidationDateException;
 import ru.practicum.exp.stat.serv.repositories.StatsRepository;
@@ -20,6 +21,7 @@ public class StatServiceImp implements StatService {
     private final StatsRepository statsRepository;
 
     @Override
+    @Transactional(readOnly = true)
     public List<ViewStatsDto> get(String start, String end, List<String> uris, boolean unique) {
         LocalDateTime newStart = DateFormatter.formatDate(start);
         LocalDateTime newEnd = DateFormatter.formatDate(end);
@@ -38,6 +40,7 @@ public class StatServiceImp implements StatService {
         if (!uris.isEmpty() && unique) {
             return statsRepository.findByDateAndUrisWithUniqueIp(newStart, newEnd, uris);
         }
+        log.info("Получение информации о запросе " + uris);
         return new ArrayList<>();
     }
 
