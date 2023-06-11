@@ -10,6 +10,9 @@ import ru.practicum.services.CategoryAdminService;
 
 import javax.validation.Valid;
 
+/**
+ *
+ */
 @Validated
 @RestController
 @RequiredArgsConstructor
