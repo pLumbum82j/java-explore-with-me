@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.exceptions.BadRequestException;
 import ru.practicum.exceptions.ConflictNameCategoryException;
 import ru.practicum.mappers.CategoryMapper;
@@ -11,7 +12,7 @@ import ru.practicum.models.Category;
 import ru.practicum.models.dto.CategoryDto;
 import ru.practicum.models.dto.NewCategoryDto;
 import ru.practicum.repositories.CategoryRepository;
-import ru.practicum.util.FindObjectInRepository;
+import ru.practicum.repositories.FindObjectInRepository;
 
 
 @Slf4j
@@ -23,6 +24,7 @@ public class CategoryAdminServiceImp implements CategoryAdminService {
     private final FindObjectInRepository findObjectInRepository;
 
     @Override
+    @Transactional
     public CategoryDto create(NewCategoryDto newCategoryDto) {
         Category category = CategoryMapper.newCategoryDtoToCategory(newCategoryDto);
         log.info("Получен запрос на добавление категории с названием: {}", newCategoryDto.getName());
@@ -30,6 +32,17 @@ public class CategoryAdminServiceImp implements CategoryAdminService {
     }
 
     @Override
+    @Transactional
+    public CategoryDto update(Long id, CategoryDto categoryDto) {
+        Category category = findObjectInRepository.getCategoryById(id);
+        category.setId(id);
+        category.setName(categoryDto.getName());
+        log.info("Получен запрос на обновлении категории c id: {}", id);
+        return getCategoryDto(category, category.getName());
+    }
+
+    @Override
+    @Transactional
     public void delete(Long id) {
         Category category = findObjectInRepository.getCategoryById(id);
 //        if (findObjectInRepository.isRelatedEvent(category)) {
@@ -37,15 +50,6 @@ public class CategoryAdminServiceImp implements CategoryAdminService {
 //        }
         log.info("Получен запрос на удаление категории c id: {}", id);
         categoryRepository.delete(category);
-    }
-
-    @Override
-    public CategoryDto update(Long id, CategoryDto categoryDto) {
-        Category category = findObjectInRepository.getCategoryById(id);
-        category.setId(id);
-        category.setName(categoryDto.getName());
-        log.info("Получен запрос на обновлении категории c id: {}", id);
-        return getCategoryDto(category, category.getName());
     }
 
     private CategoryDto getCategoryDto(Category category, String name) {
@@ -56,7 +60,7 @@ public class CategoryAdminServiceImp implements CategoryAdminService {
             throw new ConflictNameCategoryException("Имя категории " + name + " уже есть в базе");
         } catch (Exception e) {
             log.warn("Запрос на добавлении категории {} составлен не корректно", name);
-            throw new BadRequestException("Запрос на добавлении категории " + name + " составлен не корректно ");
+            throw new BadRequestException("Запрос на добавлении категории " + name + " составлен неправильно");
         }
     }
 }

@@ -10,7 +10,7 @@ import javax.validation.constraints.Size;
 @Builder
 public class CategoryDto {
     Long id;
-    @Size(max = 50, message = "Максимальное кол-во символов для описания: 50")
+    @Size(max = 50, message = "Максимальное кол-во символов для поля name: 50")
     @NotBlank(message = "Поле name не должно быть пустым")
     String name;
 

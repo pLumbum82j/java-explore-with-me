@@ -11,12 +11,12 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ApiError { // Сведения об ошибке
-    private List<String> errors; //Список стектрейсов или описания ошибок
-    private String message; //Сообщение об ошибке
-    private String reason; // Общее описание причины ошибки
-    private String status; // example: FORBIDDEN Код статуса HTTP-ответа
+public class ApiError {
+    private List<String> errors;
+    private String message;
+    private String reason;
+    private String status;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime timestamp; // Дата и время когда произошла ошибка (в формате "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime timestamp;
 
 }

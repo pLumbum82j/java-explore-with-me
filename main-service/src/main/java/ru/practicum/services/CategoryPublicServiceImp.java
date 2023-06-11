@@ -9,7 +9,7 @@ import ru.practicum.mappers.CategoryMapper;
 import ru.practicum.models.Category;
 import ru.practicum.models.dto.CategoryDto;
 import ru.practicum.repositories.CategoryRepository;
-import ru.practicum.util.FindObjectInRepository;
+import ru.practicum.repositories.FindObjectInRepository;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,8 +33,6 @@ public class CategoryPublicServiceImp implements CategoryPublicService {
     @Override
     public CategoryDto get(Long id) {
         Category category = findObjectInRepository.getCategoryById(id);
-//        Category category = categoryRepository.findById(id).orElseThrow(()
-//                -> new ResourceNotFoundException("Категория c id = " + id + " не найдена"));
         log.info("Получен запрос на поиск категории по id: {}", id);
         return CategoryMapper.categoryToCategoryDto(category);
     }

@@ -21,13 +21,13 @@ public class CategoryPublicController {
     private final CategoryPublicService categoryPublicService;
 
     @GetMapping()
-    public List<CategoryDto> getAllCategory(@PositiveOrZero @RequestParam(defaultValue = "0") Integer from,
+    public List<CategoryDto> get(@PositiveOrZero @RequestParam(defaultValue = "0") Integer from,
                                             @Positive @RequestParam(defaultValue = "10") Integer size) {
         return categoryPublicService.get(from, size);
     }
 
     @GetMapping("/{catId}")
-    public CategoryDto getCategoryById(@PathVariable Long catId) {
+    public CategoryDto get(@PathVariable Long catId) {
         return categoryPublicService.get(catId);
     }
 }
