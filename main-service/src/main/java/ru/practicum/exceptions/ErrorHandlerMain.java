@@ -15,9 +15,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@RestControllerAdvice
+
 @Slf4j
-public class ErrorHandler {
+@RestControllerAdvice
+public class ErrorHandlerMain {
     @ExceptionHandler
     @ResponseStatus(code = HttpStatus.NOT_FOUND)
     public ApiError handleResourceNotFoundException(final ResourceNotFoundException e) {

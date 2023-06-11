@@ -1,4 +1,4 @@
-package ru.practicum.services;
+package ru.practicum.services.implementation;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -6,6 +6,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.exceptions.BadRequestException;
+import ru.practicum.exceptions.ConflictDeleteException;
 import ru.practicum.exceptions.ConflictNameCategoryException;
 import ru.practicum.mappers.CategoryMapper;
 import ru.practicum.models.Category;
@@ -13,6 +14,7 @@ import ru.practicum.models.dto.CategoryDto;
 import ru.practicum.models.dto.NewCategoryDto;
 import ru.practicum.repositories.CategoryRepository;
 import ru.practicum.repositories.FindObjectInRepository;
+import ru.practicum.services.CategoryAdminService;
 
 
 @Slf4j
@@ -45,9 +47,9 @@ public class CategoryAdminServiceImp implements CategoryAdminService {
     @Transactional
     public void delete(Long id) {
         Category category = findObjectInRepository.getCategoryById(id);
-//        if (findObjectInRepository.isRelatedEvent(category)) {
-//            throw new ConflictDeleteException("Существуют события, связанные с категорией " + category.getName());
-//        }
+        if (findObjectInRepository.isRelatedEvent(category)) {
+            throw new ConflictDeleteException("Существуют события, связанные с категорией " + category.getName());
+        }
         log.info("Получен запрос на удаление категории c id: {}", id);
         categoryRepository.delete(category);
     }

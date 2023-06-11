@@ -1,4 +1,4 @@
-package ru.practicum.services;
+package ru.practicum.services.implementation;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -10,6 +10,7 @@ import ru.practicum.models.Category;
 import ru.practicum.models.dto.CategoryDto;
 import ru.practicum.repositories.CategoryRepository;
 import ru.practicum.repositories.FindObjectInRepository;
+import ru.practicum.services.CategoryPublicService;
 
 import java.util.List;
 import java.util.stream.Collectors;
