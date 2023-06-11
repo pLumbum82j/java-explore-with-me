@@ -35,6 +35,7 @@ public class ProcessingEvents {
         // List<Event> newEvents = confirmedRequests(events);
         LocalDateTime start = findStartDateTime(events);
         LocalDateTime end = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
+        //LocalDateTime end = LocalDateTime.now();
         List<ViewStatsDto> stats = statsClient.getStats(start, end, uris, true);
         fillEventViews(events, stats, request.getRequestURI());
         return events;
@@ -87,7 +88,7 @@ public class ProcessingEvents {
 
     private LocalDateTime findStartDateTime(List<Event> events) {
         LocalDateTime start;
-        Event event = events.stream().sorted(Comparator.comparing(Event::getPublishedOn)).collect(Collectors.toList()).get(0);
+        Event event = events.stream().sorted(Comparator.comparing(Event::getCreatedOn)).collect(Collectors.toList()).get(0);
         if (event.getPublishedOn() == null) {
             start = LocalDateTime.of(LocalDate.of(1900, 1, 1), LocalTime.of(0, 0, 1));
         } else {

@@ -9,10 +9,10 @@ import java.util.List;
 
 @Value
 @Builder
-public class NewCompilationDto { // Подборка событий
+public class NewCompilationDto {
     List<Long> events;
-    boolean pinned; // Закреплена ли подборка на главной странице сайта example: true
-    @Size(max = 500, message = "Максимальное кол-во символов для описания: 500")
+    boolean pinned;
+    @Size(max = 50, message = "Максимальное кол-во символов для описания: 50")
     @NotBlank(message = "title не может быть пустым")
-    String title; // Заголовок подборки example: Летние концерты
+    String title;
 }

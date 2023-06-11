@@ -51,12 +51,26 @@ public class EventPrivateServiceImp implements EventPrivateService {
         List<Event> events = eventRepository.findAllByInitiatorId(userId, pageable);
         List<Event> eventsAddViews = processingEvents.addViewsInEventsList(events, request);
         List<Event> newEvents = processingEvents.confirmedRequests(eventsAddViews);
+       // List<Event> newEvents = processingEvents.confirmedRequests(events);
         return newEvents.stream()
                 .map(EventMapper::eventToeventShortDto).collect(Collectors.toList());
     }
 
     @Override
     public EventFullDto addPrivateEventByUserId(Long userId, NewEventDto newEventDto) {
+        NewEventDto eventDtoE = NewEventDto.builder()
+                // добавить проверку на null
+                .paid(newEventDto.getPaid() ? null : false)
+                .build();
+        if (newEventDto.getPaid() == null) {
+
+//        }
+//        if (newEventDto.getParticipantLimit() == null) {
+//           newEventDto.
+//        }
+//        if (newEventDto.isRequestModeration() == null) {
+//            newEventDto.setRequestModeration(true);
+//        }
         log.info("Получен запрос на добавление события пользователем с id= {} (приватный)", userId);
         checkEventDate(DateFormatter.formatDate(newEventDto.getEventDate()));
         User user = findObjectInRepository.getUserById(userId);
@@ -179,7 +193,9 @@ public class EventPrivateServiceImp implements EventPrivateService {
         if (eventDate != null) {
             LocalDateTime timeNow = LocalDateTime.now().plusHours(2L);
             if (eventDate.isBefore(timeNow)) {
-                throw new ForbiddenEventException("Событие должно содержать дату, которая еще не наступила. " +
+                // Уточнить у ревьювера по свеггеру должна быть 409 ошибка
+                // throw new ForbiddenEventException("Событие должно содержать дату, которая еще не наступила. " +
+                throw new BadRequestException("Событие должно содержать дату, которая еще не наступила. " +
                         "Value: " + eventDate);
             }
         }

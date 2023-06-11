@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
 import lombok.Value;
 
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 @Value

@@ -66,7 +66,7 @@ public class RequestPrivateServiceImp implements RequestPrivateService {
         checkEventRequestUser(userId, eventId);
         Request request;
 
-        if (event.isRequestModeration()) {
+        if (event.getParticipantLimit() != 0 && event.isRequestModeration()) {
             request = Request.builder()
                     .created(LocalDateTime.now())
                     .event(event)
@@ -81,6 +81,22 @@ public class RequestPrivateServiceImp implements RequestPrivateService {
                     .status(RequestStatus.CONFIRMED)
                     .build();
         }
+//        if (!event.isRequestModeration() || event.getParticipantLimit() == 0) {
+//            request = Request.builder()
+//                    .event(event)
+//                    .created(LocalDateTime.now())
+//                    .requester(user)
+//                    .status(RequestStatus.CONFIRMED)
+//                    .build();
+//            event.setConfirmedRequests(event.getConfirmedRequests() + 1);
+//        } else {
+//            request = Request.builder()
+//                    .event(event)
+//                    .created(LocalDateTime.now())
+//                    .requester(user)
+//                    .status(RequestStatus.PENDING)
+//                    .build();
+//        }
         try {
             eventRepository.save(event);
             return RequestMapper.requestToParticipationRequestDto(requestRepository.save(request));
