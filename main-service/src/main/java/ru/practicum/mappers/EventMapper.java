@@ -68,7 +68,7 @@ public class EventMapper {
                 .paid(newEventDto.getPaid())
                 .participantLimit(newEventDto.getParticipantLimit())
                 .publishedOn(null)
-                .requestModeration(newEventDto.isRequestModeration())
+                .requestModeration(newEventDto.getRequestModeration())
                 .state(EventState.PENDING)
                 .title(newEventDto.getTitle())
                 .views(views)

@@ -24,7 +24,7 @@ public class NewEventDto {
     @PositiveOrZero
     Integer participantLimit;
     //@org.springframework.beans.factory.annotation.Value("true")
-    boolean requestModeration;
+    Boolean requestModeration;
     @NotBlank(message = "Поле title должно быть заполнено")
     @Size(min = 3, max = 120, message = "Минимальное кол-во символов для описания: 3. Максимальное: 120")
     String title;

@@ -16,6 +16,8 @@ import ru.practicum.repositories.CategoryRepository;
 import ru.practicum.repositories.FindObjectInRepository;
 import ru.practicum.services.CategoryAdminService;
 
+import static java.util.Optional.ofNullable;
+
 
 @Slf4j
 @Service
@@ -36,11 +38,21 @@ public class CategoryAdminServiceImp implements CategoryAdminService {
     @Override
     @Transactional
     public CategoryDto update(Long id, CategoryDto categoryDto) {
+//        Category category = findObjectInRepository.getCategoryById(id);
+//        category.setId(id);
+//        //category.setName(categoryDto.getName());
+//        ofNullable(categoryDto.getName()).ifPresent(category::setName);
+//        log.info("Получен запрос на обновлении категории c id: {}", id);
         Category category = findObjectInRepository.getCategoryById(id);
-        category.setId(id);
-        category.setName(categoryDto.getName());
+        if (!categoryDto.getName().equals(category.getName())) {
+            if (categoryRepository.existsByName(categoryDto.getName())) {
+                throw new ConflictNameCategoryException("Имя категории " + categoryDto.getName() + " уже есть в базе");
+            }
+            category.setName(categoryDto.getName());
+        }
         log.info("Получен запрос на обновлении категории c id: {}", id);
-        return getCategoryDto(category, category.getName());
+        return CategoryMapper.categoryToCategoryDto(categoryRepository.save(category));
+       //return getCategoryDto(category, category.getName());
     }
 
     @Override

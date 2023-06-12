@@ -51,33 +51,36 @@ public class EventPrivateServiceImp implements EventPrivateService {
         List<Event> events = eventRepository.findAllByInitiatorId(userId, pageable);
         List<Event> eventsAddViews = processingEvents.addViewsInEventsList(events, request);
         List<Event> newEvents = processingEvents.confirmedRequests(eventsAddViews);
-       // List<Event> newEvents = processingEvents.confirmedRequests(events);
+        // List<Event> newEvents = processingEvents.confirmedRequests(events);
         return newEvents.stream()
                 .map(EventMapper::eventToeventShortDto).collect(Collectors.toList());
     }
 
     @Override
     public EventFullDto addPrivateEventByUserId(Long userId, NewEventDto newEventDto) {
-        NewEventDto eventDtoE = NewEventDto.builder()
+        NewEventDto tempNewEventDto = NewEventDto.builder()
                 // добавить проверку на null
-                .paid(newEventDto.getPaid() ? null : false)
+                .annotation(newEventDto.getAnnotation())
+                .category(newEventDto.getCategory())
+                .description(newEventDto.getDescription())
+                .eventDate(newEventDto.getEventDate())
+                .location(newEventDto.getLocation())
+                .paid(newEventDto.getPaid() != null && newEventDto.getPaid())
+                .participantLimit(newEventDto.getParticipantLimit() == null ? 0 : newEventDto.getParticipantLimit())
+                .requestModeration(newEventDto.getRequestModeration() == null || newEventDto.getRequestModeration())
+                .title(newEventDto.getTitle())
                 .build();
-        if (newEventDto.getPaid() == null) {
 
-//        }
-//        if (newEventDto.getParticipantLimit() == null) {
-//           newEventDto.
-//        }
-//        if (newEventDto.isRequestModeration() == null) {
-//            newEventDto.setRequestModeration(true);
-//        }
         log.info("Получен запрос на добавление события пользователем с id= {} (приватный)", userId);
-        checkEventDate(DateFormatter.formatDate(newEventDto.getEventDate()));
+       // checkEventDate(DateFormatter.formatDate(newEventDto.getEventDate()));
+        checkEventDate(DateFormatter.formatDate(tempNewEventDto.getEventDate()));
         User user = findObjectInRepository.getUserById(userId);
-        Category category = findObjectInRepository.getCategoryById(newEventDto.getCategory());
+      //  Category category = findObjectInRepository.getCategoryById(newEventDto.getCategory());
+        Category category = findObjectInRepository.getCategoryById(tempNewEventDto.getCategory());
         Long views = 0L;
         Long confirmedRequests = 0L;
-        Event event = EventMapper.newEventDtoToCreateEvent(newEventDto, user, category, views, confirmedRequests);
+      // Event event = EventMapper.newEventDtoToCreateEvent(newEventDto, user, category, views, confirmedRequests);
+        Event event = EventMapper.newEventDtoToCreateEvent(tempNewEventDto, user, category, views, confirmedRequests);
         return getEventFullDto(event);
     }
 
