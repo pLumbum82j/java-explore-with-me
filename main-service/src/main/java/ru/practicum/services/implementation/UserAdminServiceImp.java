@@ -20,6 +20,9 @@ import ru.practicum.services.UserAdminService;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Класс UserAdminServiceImp для отработки логики запросов и логирования
+ */
 @Slf4j
 @Service
 @RequiredArgsConstructor

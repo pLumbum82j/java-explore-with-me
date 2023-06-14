@@ -17,7 +17,7 @@ import ru.practicum.models.Event;
 import ru.practicum.models.enums.EventState;
 import ru.practicum.models.dto.EventFullDto;
 import ru.practicum.models.dto.UpdateEventAdminRequest;
-import ru.practicum.models.enums.ActionStateDto;
+import ru.practicum.models.enums.ActionState;
 import ru.practicum.repositories.EventRepository;
 import ru.practicum.repositories.FindObjectInRepository;
 import ru.practicum.services.EventAdminService;
@@ -67,8 +67,8 @@ public class EventAdminServiceImp implements EventAdminService {
             events = eventRepository.findAllByAdminAndState(users,null, categories, newRangeStart, newRangeEnd, page);
              List<Event> eventsAddViews = processingEvents.addViewsInEventsList(events, request);
             List<Event> newEvents = processingEvents.confirmedRequests(eventsAddViews);
-            return events.stream().map(EventMapper::eventToEventFullDto).collect(Collectors.toList());
-            //return newEvents.stream().map(EventMapper::eventToEventFullDto).collect(Collectors.toList());
+            //return events.stream().map(EventMapper::eventToEventFullDto).collect(Collectors.toList());
+            return newEvents.stream().map(EventMapper::eventToEventFullDto).collect(Collectors.toList());
         }
     }
 
@@ -107,7 +107,7 @@ public class EventAdminServiceImp implements EventAdminService {
             event.setRequestModeration(updateEvent.getRequestModeration());
         }
         if (updateEvent.getStateAction() != null) {
-            if (!event.getState().equals(EventState.PUBLISHED) && updateEvent.getStateAction().equals(ActionStateDto.PUBLISH_EVENT)) {
+            if (!event.getState().equals(EventState.PUBLISHED) && updateEvent.getStateAction().equals(ActionState.PUBLISH_EVENT)) {
                 event.setPublishedOn(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
             } else if (event.getPublishedOn() == null) {
                 event.setPublishedOn(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS)); //????
@@ -135,20 +135,20 @@ public class EventAdminServiceImp implements EventAdminService {
     private LocalDateTime checkEventDate(LocalDateTime eventDate) {
         LocalDateTime timeNow = LocalDateTime.now().plusHours(1L);
         if (eventDate != null && eventDate.isBefore(timeNow)) {
-            throw new ForbiddenEventException("Событие должно содержать дату, которая еще не наступила. " +
+            throw new BadRequestException("Событие должно содержать дату, которая еще не наступила. " +
                     "Value: " + eventDate);
         }
         return timeNow;
     }
 
-    private EventState determiningTheStatusForEvent(ActionStateDto stateAction) {
-        if (stateAction.equals(ActionStateDto.SEND_TO_REVIEW)) {
+    private EventState determiningTheStatusForEvent(ActionState stateAction) {
+        if (stateAction.equals(ActionState.SEND_TO_REVIEW)) {
             return EventState.PENDING;
-        } else if (stateAction.equals(ActionStateDto.CANCEL_REVIEW)) {
+        } else if (stateAction.equals(ActionState.CANCEL_REVIEW)) {
             return EventState.CANCELED;
-        } else if (stateAction.equals(ActionStateDto.PUBLISH_EVENT)) {
+        } else if (stateAction.equals(ActionState.PUBLISH_EVENT)) {
             return EventState.PUBLISHED;
-        } else if (stateAction.equals(ActionStateDto.REJECT_EVENT)) {
+        } else if (stateAction.equals(ActionState.REJECT_EVENT)) {
             return EventState.CANCELED;
         } else {
             throw new BadRequestException("Статус не соответствует модификатору доступа");

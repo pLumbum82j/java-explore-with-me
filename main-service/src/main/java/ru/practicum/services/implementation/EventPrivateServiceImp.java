@@ -16,10 +16,9 @@ import ru.practicum.mappers.LocationMapper;
 import ru.practicum.mappers.RequestMapper;
 import ru.practicum.models.*;
 import ru.practicum.models.dto.*;
-import ru.practicum.models.enums.ActionStateDto;
+import ru.practicum.models.enums.ActionState;
 import ru.practicum.models.enums.EventState;
 import ru.practicum.models.enums.RequestStatus;
-import ru.practicum.models.enums.RequestStatusDto;
 import ru.practicum.repositories.EventRepository;
 import ru.practicum.repositories.FindObjectInRepository;
 import ru.practicum.repositories.RequestRepository;
@@ -179,10 +178,10 @@ public class EventPrivateServiceImp implements EventPrivateService {
         if (event.getParticipantLimit() == 0 || !event.isRequestModeration()) {
             log.info("Подтверждение заявок не требуется");
             return new EventRequestStatusUpdateResult(new ArrayList<>(), new ArrayList<>());
-        } else if (eventRequest.getStatus().equals(RequestStatusDto.CONFIRMED)) {
+        } else if (eventRequest.getStatus().equals(RequestStatus.CONFIRMED)) {
             log.info("Запрос на подтверждение заявок");
             return considerationOfRequests(event, requests);
-        } else if (eventRequest.getStatus().equals(RequestStatusDto.REJECTED)) {
+        } else if (eventRequest.getStatus().equals(RequestStatus.REJECTED)) {
             log.info("Запрос на отклонение заявок");
             EventRequestStatusUpdateResult result = new EventRequestStatusUpdateResult(new ArrayList<>(), new ArrayList<>());
             List<ParticipationRequestDto> rejectedRequests = addRejectedAllRequests(requests);
@@ -210,14 +209,14 @@ public class EventPrivateServiceImp implements EventPrivateService {
         }
     }
 
-    private EventState determiningTheStatusForEvent(ActionStateDto stateAction) {
-        if (stateAction.equals(ActionStateDto.SEND_TO_REVIEW)) {
+    private EventState determiningTheStatusForEvent(ActionState stateAction) {
+        if (stateAction.equals(ActionState.SEND_TO_REVIEW)) {
             return EventState.PENDING;
-        } else if (stateAction.equals(ActionStateDto.CANCEL_REVIEW)) {
+        } else if (stateAction.equals(ActionState.CANCEL_REVIEW)) {
             return EventState.CANCELED;
-        } else if (stateAction.equals(ActionStateDto.PUBLISH_EVENT)) {
+        } else if (stateAction.equals(ActionState.PUBLISH_EVENT)) {
             return EventState.PUBLISHED;
-        } else if (stateAction.equals(ActionStateDto.REJECT_EVENT)) {
+        } else if (stateAction.equals(ActionState.REJECT_EVENT)) {
             return EventState.CANCELED;
         } else {
             throw new BadRequestException("Статус не соответствует модификатору доступа");
@@ -226,7 +225,7 @@ public class EventPrivateServiceImp implements EventPrivateService {
 
     private void eventAvailability(Event event) {
         if (event.getState().equals(EventState.PUBLISHED)) {
-            throw new ForbiddenEventException("Статус события не позволяет редоктировать событие, статус: " + event.getState());
+            throw new ForbiddenEventException("Статус события не позволяет редактировать событие, статус: " + event.getState());
         }
     }
 

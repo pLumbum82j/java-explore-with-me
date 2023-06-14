@@ -1,9 +1,8 @@
 package ru.practicum.models.dto;
 
 import lombok.Builder;
-import lombok.Setter;
 import lombok.Value;
-import ru.practicum.models.enums.ActionStateDto;
+import ru.practicum.models.enums.ActionState;
 
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.PositiveOrZero;
@@ -24,7 +23,7 @@ public class UpdateEventUserRequest { // Данные для изменения 
     @PositiveOrZero
     Integer participantLimit; // Ограничение на количество участников. Значение 0 - означает отсутствие ограничения
     Boolean requestModeration; // Нужна ли пре-модерация заявок на участие
-    ActionStateDto stateAction;
+    ActionState stateAction;
     @Size(min = 3, max = 120, message = "Минимальное кол-во символов для описания: 5. Максимальное: 120")
     String title; // example: Знаменитое шоу 'Летающая кукуруза' Заголовок
 }

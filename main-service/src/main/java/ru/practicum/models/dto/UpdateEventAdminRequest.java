@@ -2,8 +2,7 @@ package ru.practicum.models.dto;
 
 import lombok.Builder;
 import lombok.Value;
-import org.hibernate.validator.constraints.Length;
-import ru.practicum.models.enums.ActionStateDto;
+import ru.practicum.models.enums.ActionState;
 
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.PositiveOrZero;
@@ -24,7 +23,7 @@ public class UpdateEventAdminRequest { // Данные для изменения
     @PositiveOrZero
     Integer participantLimit;
     Boolean requestModeration;
-    ActionStateDto stateAction;
+    ActionState stateAction;
     @Size(min = 3, max = 120, message = "Минимальное кол-во символов для заголовка: 5. Максимальное: 120")
     String title;
 }

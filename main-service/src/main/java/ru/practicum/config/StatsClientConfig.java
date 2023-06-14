@@ -5,6 +5,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import ru.practicum.exp.stat.client.StatsClient;
 
+/**
+ * Класс конфигурации StatsClient'a
+ */
 @Configuration
 public class StatsClientConfig {
     @Value("${stats-module-url}")

@@ -12,8 +12,8 @@ import java.time.format.DateTimeParseException;
  */
 @UtilityClass
 public class DateFormatter {
-    private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
-    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
+    public static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
+    public static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
 
     /**
      * Статический метод проверки и преобразования даты и времени

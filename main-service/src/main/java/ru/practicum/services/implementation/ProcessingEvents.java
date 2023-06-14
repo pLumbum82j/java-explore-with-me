@@ -63,7 +63,7 @@ public class ProcessingEvents {
         List<Event> newEvents = new ArrayList<>();
         if (!requestsPerEvent.isEmpty()) {
             for (Event e : events) {
-                long count = requestsPerEvent.get(e);
+                long count = requestsPerEvent.get(e) == null ? 0 : requestsPerEvent.get(e);
                 e.setConfirmedRequests(count);
                 newEvents.add(e);
             }

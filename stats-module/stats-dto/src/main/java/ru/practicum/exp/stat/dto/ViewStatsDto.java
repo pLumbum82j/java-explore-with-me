@@ -3,6 +3,7 @@ package ru.practicum.exp.stat.dto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Value;
+import lombok.extern.jackson.Jacksonized;
 
 import javax.validation.constraints.NotBlank;
 
@@ -14,9 +15,7 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 public class ViewStatsDto {
 
-    @NotBlank(message = "Поле \"app\" должно быть заполнено")
     String app;
-    @NotBlank(message = "Поле \"uri\" должно быть заполнено")
     String uri;
     Long hits;
 }

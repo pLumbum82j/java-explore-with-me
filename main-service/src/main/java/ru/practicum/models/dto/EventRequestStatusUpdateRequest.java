@@ -2,7 +2,7 @@ package ru.practicum.models.dto;
 
 import lombok.Builder;
 import lombok.Value;
-import ru.practicum.models.enums.RequestStatusDto;
+import ru.practicum.models.enums.RequestStatus;
 
 import java.util.List;
 
@@ -10,5 +10,5 @@ import java.util.List;
 @Builder
 public class EventRequestStatusUpdateRequest { // Изменение статуса запроса на участие в событии текущего пользователя
     List<Long> requestIds; // Идентификаторы запросов на участие в событии текущего пользователя
-    RequestStatusDto status;
+    RequestStatus status;
 }

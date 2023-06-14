@@ -15,8 +15,11 @@ import ru.practicum.services.CategoryPublicService;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Service
+/**
+ * Класс CategoryPublicServiceImp для отработки логики запросов и логирования
+ */
 @Slf4j
+@Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class CategoryPublicServiceImp implements CategoryPublicService {

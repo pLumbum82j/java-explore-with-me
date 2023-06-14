@@ -10,7 +10,6 @@ import ru.practicum.models.User;
 import ru.practicum.models.dto.EventFullDto;
 import ru.practicum.models.dto.EventShortDto;
 import ru.practicum.models.dto.NewEventDto;
-import ru.practicum.models.enums.EventStateDto;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -75,14 +74,14 @@ public class EventMapper {
                 .build();
     }
 
-    public static EventState eventStateDtoToEventState(EventStateDto state) {
-        if (state.name().equals(EventStateDto.PENDING.name())) {
+    public static EventState eventStateDtoToEventState(EventState state) {
+        if (state.name().equals(EventState.PENDING.name())) {
             return EventState.PENDING;
         }
-        if (state.name().equals(EventStateDto.CANCELED.name())) {
+        if (state.name().equals(EventState.CANCELED.name())) {
             return EventState.CANCELED;
         }
-        if (state.name().equals(EventStateDto.PUBLISHED.name())) {
+        if (state.name().equals(EventState.PUBLISHED.name())) {
             return EventState.PUBLISHED;
         }
         throw new BadRequestException("Нет такого статуса" + state.name());

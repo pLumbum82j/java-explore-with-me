@@ -6,6 +6,9 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Публичный класс сведений об ошибке
+ */
 @Getter
 @Setter
 @Builder
