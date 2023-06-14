@@ -3,6 +3,7 @@ package ru.practicum.services.implementation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.exceptions.BadRequestException;
@@ -43,6 +44,7 @@ public class EventAdminServiceImp implements EventAdminService {
     public List<EventFullDto> get(List<Long> users, List<String> states, List<Long> categories,
                                   String rangeStart, String rangeEnd, int from, int size, HttpServletRequest request) {
         log.info("Получен запрос на поиск всех событый (администратором)");
+        PageRequest page = PageRequest.of(from, size);
         List<Event> events = new ArrayList<>();
         LocalDateTime newRangeStart = null;
         if (rangeStart != null) {
@@ -59,10 +61,14 @@ public class EventAdminServiceImp implements EventAdminService {
             List<Event> newEvents = processingEvents.confirmedRequests(eventsAddViews);
             return newEvents.stream().map(EventMapper::eventToEventFullDto).collect(Collectors.toList());
         } else {
-            events = eventRepository.findAllByAdminAndState(users, categories, newRangeStart, newRangeEnd, from, size);
-            List<Event> eventsAddViews = processingEvents.addViewsInEventsList(events, request);
+            //14.06.2023
+            //  events = eventRepository.findAllByAdminAndState(users, categories, newRangeStart, newRangeEnd, from, size);
+            // events = eventRepository.findAllByAdminAndState(users, categories, newRangeStart, newRangeEnd, page);
+            events = eventRepository.findAllByAdminAndState(users,null, categories, newRangeStart, newRangeEnd, page);
+             List<Event> eventsAddViews = processingEvents.addViewsInEventsList(events, request);
             List<Event> newEvents = processingEvents.confirmedRequests(eventsAddViews);
-            return newEvents.stream().map(EventMapper::eventToEventFullDto).collect(Collectors.toList());
+            return events.stream().map(EventMapper::eventToEventFullDto).collect(Collectors.toList());
+            //return newEvents.stream().map(EventMapper::eventToEventFullDto).collect(Collectors.toList());
         }
     }
 
@@ -156,8 +162,8 @@ public class EventAdminServiceImp implements EventAdminService {
     }
 
     private void addEventConfirmedRequestsAndViews(Event event, HttpServletRequest request) {
-   //     long count = processingEvents.confirmedRequestsForOneEvent(event, RequestStatus.CONFIRMED);
-   //     event.setConfirmedRequests(count);
+        //     long count = processingEvents.confirmedRequestsForOneEvent(event, RequestStatus.CONFIRMED);
+        //     event.setConfirmedRequests(count);
         long views = processingEvents.searchViews(event, request);
         event.setViews(views);
     }
