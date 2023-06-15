@@ -7,6 +7,7 @@ import ru.practicum.models.enums.ActionState;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.PositiveOrZero;
 import javax.validation.constraints.Size;
+
 /**
  * Модель объекта UpdateEventAdminRequest
  * (Данные для изменения информации о событии)
@@ -14,7 +15,6 @@ import javax.validation.constraints.Size;
 @Value
 @Builder
 public class UpdateEventAdminRequest {
-
     @Size(min = 20, max = 2000, message = "Минимальное кол-во символов для аннотации: 20. Максимальное: 2000")
     String annotation;
     Long category;

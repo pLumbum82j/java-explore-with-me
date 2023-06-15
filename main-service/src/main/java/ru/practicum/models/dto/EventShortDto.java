@@ -5,13 +5,13 @@ import lombok.Builder;
 import lombok.Value;
 
 import java.time.LocalDateTime;
+
 /**
  * Модель объекта EventShort Data Transfer Object
  */
 @Value
 @Builder
 public class EventShortDto {
-
     String annotation;
     CategoryDto category;
     Long confirmedRequests;
