@@ -10,6 +10,9 @@ import ru.practicum.models.dto.UpdateCompilationRequest;
 import ru.practicum.services.CompilationAdminService;
 
 
+/**
+ * Класс CompilationAdminController по энпоинту admin/compilations
+ */
 @Validated
 @RestController
 @RequiredArgsConstructor
@@ -19,7 +22,10 @@ public class CompilationAdminController {
 
 
     /**
-     * Добавление новой подборки (подборка может не содержать событий)
+     * Метод (эндпоинт) создания подборки
+     *
+     * @param newCompilationDto Объект NewCompilationDto
+     * @return Созданный объект подборки NewCompilationDto
      */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -28,7 +34,11 @@ public class CompilationAdminController {
     }
 
     /**
-     * обновить информацию о подборке
+     * Метод (эндпоинт) обновления подборки по ID
+     *
+     * @param compId                   ID подборки
+     * @param updateCompilationRequest Объект подборки UpdateCompilationRequest
+     * @return Изменённый объект подборки CompilationDto
      */
     @PatchMapping("/{compId}")
     public CompilationDto update(@PathVariable Long compId,
@@ -37,7 +47,9 @@ public class CompilationAdminController {
     }
 
     /**
-     * Удаление подборки
+     * Метод (эндпоинт) удаления подборки по ID
+     *
+     * @param compId ID подборки
      */
     @DeleteMapping("/{compId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)

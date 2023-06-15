@@ -4,13 +4,15 @@ package ru.practicum.repositories;
 import org.springframework.data.jpa.repository.JpaRepository;
 import ru.practicum.models.Event;
 import ru.practicum.models.Request;
-import ru.practicum.models.enums.RequestStatus;
 import ru.practicum.models.User;
+import ru.practicum.models.enums.RequestStatus;
 
 import java.util.List;
 import java.util.Optional;
 
-
+/**
+ * Интерфейс RequestRepository для обработки запросов к БД
+ */
 public interface RequestRepository extends JpaRepository<Request, Long> {
     List<Request> findAllByEvent(Event event);
 

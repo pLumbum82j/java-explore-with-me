@@ -15,6 +15,9 @@ import ru.practicum.services.CompilationPublicService;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Класс CompilationPublicServiceImp для отработки логики запросов и логирования
+ */
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -26,15 +29,15 @@ public class CompilationPublicServiceImp implements CompilationPublicService {
 
     @Override
     public List<CompilationDto> get(Boolean pinned, int from, int size) {
-        log.info("Получен запрос поиск всех подборок событий, по условию закрепления {}", pinned);
         Pageable pageable = PageRequest.of(from, size);
+        log.info("Получен запрос на поиск всех подборок событий");
         return compilationRepository.findAllByPinnedIs(pinned, pageable).stream()
                 .map(CompilationMapper::compilationToCompilationDto).collect(Collectors.toList());
     }
 
     @Override
     public CompilationDto get(Long id) {
-        log.info("Получен запрос на поиск подборки событий по id= {}", id);
+        log.info("Получен запрос на поиск подборки событий по id: {}", id);
         return CompilationMapper.compilationToCompilationDto(findObjectInRepository.getCompilationById(id));
     }
 }
