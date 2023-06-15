@@ -2,6 +2,7 @@ package ru.practicum.services.implementation;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.exceptions.BadRequestException;
@@ -35,8 +36,9 @@ public class EventPublicServiceImp implements EventPublicService {
     private final EventRepository eventRepository;
     private final ProcessingEvents processingEvents;
     private final StatsClient statsClient;
-    // @Value("${app.name}")
-    private String appName = "main-service";
+    @Value("${app.name}")
+    private String appName;
+    //private String appName = "main-service";
 
 
     @Override
