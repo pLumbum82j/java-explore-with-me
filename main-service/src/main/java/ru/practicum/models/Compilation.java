@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * // Подборка событий
+ * Модель объекта Compilation
  */
 @Getter
 @Setter

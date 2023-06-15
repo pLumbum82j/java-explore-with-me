@@ -4,6 +4,9 @@ import lombok.*;
 
 import javax.persistence.*;
 
+/**
+ * Модель объекта User
+ */
 @Getter
 @Setter
 @Entity

@@ -7,16 +7,19 @@ import ru.practicum.models.enums.ActionState;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.PositiveOrZero;
 import javax.validation.constraints.Size;
-
+/**
+ * Модель объекта UpdateEventAdminRequest
+ * (Данные для изменения информации о событии)
+ */
 @Value
 @Builder
-public class UpdateEventAdminRequest { // Данные для изменения информации о событии. Если поле в запросе не указано (равно null) - значит изменение этих данных не треубется.
+public class UpdateEventAdminRequest {
     @Size(min = 20, max = 2000, message = "Минимальное кол-во символов для аннотации: 20. Максимальное: 2000")
     String annotation;
     Long category;
     @Size(min = 20, max = 7000, message = "Минимальное кол-во символов для описания: 20. Максимальное: 7000")
     String description;
-    @Pattern(regexp = "\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}", message = "Invalid date format")
+    @Pattern(regexp = "\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}", message = "Неправильный формат даты")
     String eventDate;
     LocationDto location;
     Boolean paid;

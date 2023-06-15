@@ -6,8 +6,18 @@ import ru.practicum.models.dto.NewUserRequest;
 import ru.practicum.models.dto.UserDto;
 import ru.practicum.models.dto.UserShortDto;
 
+/**
+ * Утилитарный класс UserMapper для преобразования User / UserDto / UserShortDto / NewUserRequest
+ */
 @UtilityClass
 public class UserMapper {
+
+    /**
+     * Преобразование User в UserDto
+     *
+     * @param user Объект User
+     * @return Преобразованный объект UserDto
+     */
     public UserDto userToDto(User user) {
         return UserDto.builder()
                 .id(user.getId())
@@ -16,6 +26,12 @@ public class UserMapper {
                 .build();
     }
 
+    /**
+     * Преобразование User в UserShortDto
+     *
+     * @param user Объект User
+     * @return Преобразованный объект UserShortDto
+     */
     public UserShortDto userToUserShortDto(User user) {
         return UserShortDto.builder()
                 .id(user.getId())
@@ -23,6 +39,12 @@ public class UserMapper {
                 .build();
     }
 
+    /**
+     * Преобразование NewUserRequest в User
+     *
+     * @param newUserRequest Объект NewUserRequest
+     * @return Преобразованный объект User
+     */
     public User newUserRequestToUser(NewUserRequest newUserRequest) {
         return User.builder()
                 .name(newUserRequest.getName())

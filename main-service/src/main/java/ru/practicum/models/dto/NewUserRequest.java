@@ -7,6 +7,10 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+/**
+ * Модель объекта NewUserRequest
+ * (Данные для добавления нового пользователя)
+ */
 @Value
 @Builder
 public class NewUserRequest {

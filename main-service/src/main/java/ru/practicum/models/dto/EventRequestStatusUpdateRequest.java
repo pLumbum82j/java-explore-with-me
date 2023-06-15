@@ -6,9 +6,13 @@ import ru.practicum.models.enums.RequestStatus;
 
 import java.util.List;
 
+/**
+ * Модель объекта EventRequestStatusUpdateRequest
+ * (Изменение статуса запроса на участие в событии текущего пользователя)
+ */
 @Value
 @Builder
-public class EventRequestStatusUpdateRequest { // Изменение статуса запроса на участие в событии текущего пользователя
-    List<Long> requestIds; // Идентификаторы запросов на участие в событии текущего пользователя
+public class EventRequestStatusUpdateRequest {
+    List<Long> requestIds;
     RequestStatus status;
 }

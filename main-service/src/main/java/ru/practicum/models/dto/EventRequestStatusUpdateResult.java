@@ -5,7 +5,8 @@ import lombok.*;
 import java.util.List;
 
 /**
- * Результат подтверждения/отклонения заявок на участие в событии
+ * Модель объекта EventRequestStatusUpdateResult
+ * (Результат подтверждения/отклонения заявок на участие в событии)
  */
 @Builder
 @Setter
@@ -13,6 +14,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class EventRequestStatusUpdateResult {
-    private List<ParticipationRequestDto> confirmedRequests; //подтвержденные запросы
-    private List<ParticipationRequestDto> rejectedRequests; // отклоненные запросы
+    private List<ParticipationRequestDto> confirmedRequests;
+    private List<ParticipationRequestDto> rejectedRequests;
 }

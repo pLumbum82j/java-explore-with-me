@@ -1,22 +1,30 @@
 package ru.practicum.mappers;
 
 import lombok.experimental.UtilityClass;
-import ru.practicum.exceptions.BadRequestException;
-import ru.practicum.util.DateFormatter;
 import ru.practicum.models.Category;
 import ru.practicum.models.Event;
-import ru.practicum.models.enums.EventState;
 import ru.practicum.models.User;
 import ru.practicum.models.dto.EventFullDto;
 import ru.practicum.models.dto.EventShortDto;
 import ru.practicum.models.dto.NewEventDto;
+import ru.practicum.models.enums.EventState;
+import ru.practicum.util.DateFormatter;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
+/**
+ * Утилитарный класс EventMapper для преобразования Event / EventShortDto / EventFullDto / EventState
+ */
 @UtilityClass
 public class EventMapper {
 
+    /**
+     * Преобразование Event в EventShortDto
+     *
+     * @param event Объект Event
+     * @return Преобразованный объект EventShortDto
+     */
     public EventShortDto eventToeventShortDto(Event event) {
         return EventShortDto.builder()
                 .annotation(event.getAnnotation())
@@ -31,6 +39,12 @@ public class EventMapper {
                 .build();
     }
 
+    /**
+     * Преобразование Event в EventFullDto
+     *
+     * @param event Объект Event
+     * @return Преобразованный объект EventFullDto
+     */
     public EventFullDto eventToEventFullDto(Event event) {
         return EventFullDto.builder()
                 .annotation(event.getAnnotation())
@@ -52,6 +66,16 @@ public class EventMapper {
                 .build();
     }
 
+    /**
+     * Преобразование нескольких параметров в Event
+     *
+     * @param newEventDto       Объект NewEventDto
+     * @param user              Объект User
+     * @param category          Объект Category
+     * @param views             Количество просмотрев события
+     * @param confirmedRequests Количество одобренных заявок на участие в данном событии
+     * @return Преобразованный объект Event
+     */
     public static Event newEventDtoToCreateEvent(NewEventDto newEventDto, User user, Category category, Long views,
                                                  Long confirmedRequests) {
         LocalDateTime dateTime = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
@@ -72,18 +96,5 @@ public class EventMapper {
                 .title(newEventDto.getTitle())
                 .views(views)
                 .build();
-    }
-
-    public static EventState eventStateDtoToEventState(EventState state) {
-        if (state.name().equals(EventState.PENDING.name())) {
-            return EventState.PENDING;
-        }
-        if (state.name().equals(EventState.CANCELED.name())) {
-            return EventState.CANCELED;
-        }
-        if (state.name().equals(EventState.PUBLISHED.name())) {
-            return EventState.PUBLISHED;
-        }
-        throw new BadRequestException("Нет такого статуса" + state.name());
     }
 }

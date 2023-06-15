@@ -3,9 +3,13 @@ package ru.practicum.models.dto;
 import lombok.Builder;
 import lombok.Value;
 
+/**
+ * Модель объекта Location Data Transfer Object
+ * (Широта и долгота места проведения события)
+ */
 @Value
 @Builder
 public class LocationDto {
-    float lat; // example: 55.754167 - Широта
-    float lon; // example: 37.62 - Долгота
+    float lat;
+    float lon;
 }
