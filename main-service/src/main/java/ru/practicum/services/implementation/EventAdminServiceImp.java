@@ -9,26 +9,28 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.exceptions.BadRequestException;
 import ru.practicum.exceptions.ForbiddenEventException;
 import ru.practicum.exceptions.ResourceNotFoundException;
-import ru.practicum.util.DateFormatter;
 import ru.practicum.mappers.EventMapper;
 import ru.practicum.mappers.LocationMapper;
 import ru.practicum.models.Category;
 import ru.practicum.models.Event;
-import ru.practicum.models.enums.EventState;
 import ru.practicum.models.dto.EventFullDto;
 import ru.practicum.models.dto.UpdateEventAdminRequest;
 import ru.practicum.models.enums.ActionState;
+import ru.practicum.models.enums.EventState;
 import ru.practicum.repositories.EventRepository;
 import ru.practicum.repositories.FindObjectInRepository;
 import ru.practicum.services.EventAdminService;
+import ru.practicum.util.DateFormatter;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Класс EventAdminServiceImp для отработки логики запросов и логирования
+ */
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -43,9 +45,8 @@ public class EventAdminServiceImp implements EventAdminService {
     @Transactional(readOnly = true)
     public List<EventFullDto> get(List<Long> users, List<String> states, List<Long> categories,
                                   String rangeStart, String rangeEnd, int from, int size, HttpServletRequest request) {
-        log.info("Получен запрос на поиск всех событый (администратором)");
         PageRequest page = PageRequest.of(from, size);
-        List<Event> events = new ArrayList<>();
+        List<Event> events;
         LocalDateTime newRangeStart = null;
         if (rangeStart != null) {
             newRangeStart = DateFormatter.formatDate(rangeStart);
@@ -54,20 +55,16 @@ public class EventAdminServiceImp implements EventAdminService {
         if (rangeEnd != null) {
             newRangeEnd = DateFormatter.formatDate(rangeEnd);
         }
-
+        log.info("Получен запрос от администратора на поиск событий");
         if (states != null) {
             events = eventRepository.findAllByAdmin(users, states, categories, newRangeStart, newRangeEnd, from, size);
             List<Event> eventsAddViews = processingEvents.addViewsInEventsList(events, request);
-            List<Event> newEvents = processingEvents.confirmedRequests(eventsAddViews);
+            List<Event> newEvents = processingEvents.confirmRequests(eventsAddViews);
             return newEvents.stream().map(EventMapper::eventToEventFullDto).collect(Collectors.toList());
         } else {
-            //14.06.2023
-            //  events = eventRepository.findAllByAdminAndState(users, categories, newRangeStart, newRangeEnd, from, size);
-            // events = eventRepository.findAllByAdminAndState(users, categories, newRangeStart, newRangeEnd, page);
-            events = eventRepository.findAllByAdminAndState(users,null, categories, newRangeStart, newRangeEnd, page);
-             List<Event> eventsAddViews = processingEvents.addViewsInEventsList(events, request);
-            List<Event> newEvents = processingEvents.confirmedRequests(eventsAddViews);
-            //return events.stream().map(EventMapper::eventToEventFullDto).collect(Collectors.toList());
+            events = eventRepository.findAllByAdminAndState(users, null, categories, newRangeStart, newRangeEnd, page);
+            List<Event> eventsAddViews = processingEvents.addViewsInEventsList(events, request);
+            List<Event> newEvents = processingEvents.confirmRequests(eventsAddViews);
             return newEvents.stream().map(EventMapper::eventToEventFullDto).collect(Collectors.toList());
         }
     }
@@ -75,7 +72,6 @@ public class EventAdminServiceImp implements EventAdminService {
     @Override
     @Transactional
     public EventFullDto update(Long eventId, UpdateEventAdminRequest updateEvent, HttpServletRequest request) {
-        log.info("Получен запрос на обновление события с id= {} (администратором)", eventId);
         Event event = findObjectInRepository.getEventById(eventId);
         eventAvailability(event);
         if (updateEvent.getEventDate() != null) {
@@ -118,12 +114,14 @@ public class EventAdminServiceImp implements EventAdminService {
             event.setTitle(updateEvent.getTitle());
         }
         if (event.getState().equals(EventState.PUBLISHED)) {
-            addEventConfirmedRequestsAndViews(event, request);
+            long views = processingEvents.searchViews(event, request);
+            event.setViews(views);
         } else {
             event.setViews(0L);
             event.setConfirmedRequests(0L);
         }
         try {
+            log.info("Получен запрос от администратора на обновление события с id: {}", eventId);
             return EventMapper.eventToEventFullDto(eventRepository.save(event));
         } catch (DataAccessException e) {
             throw new ResourceNotFoundException("База данных недоступна");
@@ -132,15 +130,25 @@ public class EventAdminServiceImp implements EventAdminService {
         }
     }
 
-    private LocalDateTime checkEventDate(LocalDateTime eventDate) {
+    /**
+     * Метод проверки времени и даты от текущего времени
+     *
+     * @param eventDate Время и дата из объекта события
+     */
+    private void checkEventDate(LocalDateTime eventDate) {
         LocalDateTime timeNow = LocalDateTime.now().plusHours(1L);
         if (eventDate != null && eventDate.isBefore(timeNow)) {
             throw new BadRequestException("Событие должно содержать дату, которая еще не наступила. " +
-                    "Value: " + eventDate);
+                    "Текущее значение: " + eventDate);
         }
-        return timeNow;
     }
 
+    /**
+     * Метод определения статуса события
+     *
+     * @param stateAction Текущий статус из объекта события
+     * @return Новый статус после определения
+     */
     private EventState determiningTheStatusForEvent(ActionState stateAction) {
         if (stateAction.equals(ActionState.SEND_TO_REVIEW)) {
             return EventState.PENDING;
@@ -155,16 +163,14 @@ public class EventAdminServiceImp implements EventAdminService {
         }
     }
 
+    /**
+     * Метод проверки доступности события
+     *
+     * @param event Объект события
+     */
     private void eventAvailability(Event event) {
         if (event.getState().equals(EventState.PUBLISHED) || event.getState().equals(EventState.CANCELED)) {
             throw new ForbiddenEventException("Статус события не позволяет редактировать событие, статус: " + event.getState());
         }
-    }
-
-    private void addEventConfirmedRequestsAndViews(Event event, HttpServletRequest request) {
-        //     long count = processingEvents.confirmedRequestsForOneEvent(event, RequestStatus.CONFIRMED);
-        //     event.setConfirmedRequests(count);
-        long views = processingEvents.searchViews(event, request);
-        event.setViews(views);
     }
 }

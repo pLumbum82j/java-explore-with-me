@@ -9,12 +9,14 @@ import ru.practicum.models.Category;
 import ru.practicum.models.Event;
 import ru.practicum.models.enums.EventState;
 
-
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+/**
+ * Интерфейс EventRepository для обработки запросов к БД
+ */
 @Repository
 public interface EventRepository extends JpaRepository<Event, Long> {
     List<Event> findEventByCategoryIs(Category category);
@@ -35,27 +37,17 @@ public interface EventRepository extends JpaRepository<Event, Long> {
                                @Param("from") Integer from,
                                @Param("size") Integer size);
 
-//    @Query(value = "SELECT * " +
-//            "FROM events " +
-//            "WHERE (initiator_id IN :users OR :users IS NULL) " +
-//            "AND (category_id IN :categories  OR :categories IS NULL) " +
-//            "AND (event_date >= to_timestamp(:rangeStart, 'yyyy-mm-dd hh24:mi:ss')  OR to_timestamp(:rangeStart, 'yyyy-mm-dd hh24:mi:ss') IS NULL) " +
-//            "AND (event_date <= to_timestamp(:rangeEnd, 'yyyy-mm-dd hh24:mi:ss')   OR to_timestamp(:rangeEnd, 'yyyy-mm-dd hh24:mi:ss') IS NULL) " +
-//            "OFFSET :from " +
-//            "LIMIT :size", nativeQuery = true)
-@Query("select e from Event e " +
-        "where (:users is null or e.initiator.id in :users) " +
-        "and (:states is null or e.state in :states) " +
-        "and (:categories is null or e.category.id in :categories) " +
-        "and (cast(:rangeStart as java.time.LocalDateTime) is null or e.eventDate >= :rangeStart) " +
-        "and (cast(:rangeEnd as java.time.LocalDateTime) is null or e.eventDate <= :rangeEnd)")
+    @Query("select e from Event e " +
+            "where (:users is null or e.initiator.id in :users) " +
+            "and (:states is null or e.state in :states) " +
+            "and (:categories is null or e.category.id in :categories) " +
+            "and (cast(:rangeStart as java.time.LocalDateTime) is null or e.eventDate >= :rangeStart) " +
+            "and (cast(:rangeEnd as java.time.LocalDateTime) is null or e.eventDate <= :rangeEnd)")
     List<Event> findAllByAdminAndState(@Param("users") List<Long> users,
                                        @Param("states") List<EventState> states,
                                        @Param("categories") List<Long> categories,
                                        @Param("rangeStart") LocalDateTime rangeStart,
                                        @Param("rangeEnd") LocalDateTime rangeEnd,
-                                      // @Param("from") Integer from,
-                                     //  @Param("size") Integer size);
                                        Pageable pageable);
 
     @Query(value = "SELECT * " +
@@ -79,5 +71,4 @@ public interface EventRepository extends JpaRepository<Event, Long> {
                                 @Param("size") Integer size);
 
     Optional<Event> findEventByIdAndStateIs(Long id, EventState state);
-
 }

@@ -1,7 +1,7 @@
 package ru.practicum.models.enums;
 
 /**
- * ENUM сосояния события (EventState)
+ * ENUM состояния события (EventState)
  */
 public enum EventState {
     PENDING, PUBLISHED, CANCELED
