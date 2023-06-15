@@ -1,17 +1,12 @@
 package ru.practicum.exp.stat.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Value;
-import lombok.extern.jackson.Jacksonized;
-
-import javax.validation.constraints.NotBlank;
+import lombok.*;
 
 /**
  * Модель объекта ViewStats Data Transfer Object
  */
-@Value
-@Builder
+@Data
+@RequiredArgsConstructor
 @AllArgsConstructor
 public class ViewStatsDto {
 
