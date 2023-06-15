@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface EventPublicService {
+
     List<EventShortDto> get(String text, List<Long> categories, Boolean paid, String rangeStart, String rangeEnd,
                             boolean onlyAvailable, String sort, Integer from, Integer size, HttpServletRequest request);
 

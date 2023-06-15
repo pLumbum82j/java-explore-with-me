@@ -14,6 +14,7 @@ import javax.validation.constraints.Size;
 @Value
 @Builder
 public class UpdateEventAdminRequest {
+
     @Size(min = 20, max = 2000, message = "Минимальное кол-во символов для аннотации: 20. Максимальное: 2000")
     String annotation;
     Long category;
