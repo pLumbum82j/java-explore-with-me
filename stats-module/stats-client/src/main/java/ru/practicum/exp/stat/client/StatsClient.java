@@ -3,15 +3,12 @@ package ru.practicum.exp.stat.client;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.client.WebClient;
-import org.springframework.web.util.UriBuilder;
 import ru.practicum.exp.stat.dto.HitDto;
 import ru.practicum.exp.stat.dto.ViewStatsDto;
 
-import java.net.URI;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.function.Function;
 
 /**
  * Класс клиента сервера статистики
