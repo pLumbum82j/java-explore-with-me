@@ -38,8 +38,6 @@ public class EventPublicServiceImp implements EventPublicService {
     private final StatsClient statsClient;
     @Value("${app.name}")
     private String appName;
-    //private String appName = "main-service";
-
 
     @Override
     @Transactional(readOnly = true)
