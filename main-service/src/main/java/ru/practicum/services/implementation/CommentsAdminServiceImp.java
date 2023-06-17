@@ -24,6 +24,9 @@ import ru.practicum.util.CommentUtil;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Класс CommentsAdminServiceImp для отработки логики запросов и логирования
+ */
 @Slf4j
 @Service
 @RequiredArgsConstructor
