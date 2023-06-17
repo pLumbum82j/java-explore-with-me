@@ -7,6 +7,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.practicum.exceptions.ForbiddenEventException;
 import ru.practicum.exceptions.ResourceNotFoundException;
 import ru.practicum.mappers.CommentsMapper;
 import ru.practicum.models.Comment;
@@ -19,7 +20,6 @@ import ru.practicum.repositories.CommentsRepository;
 import ru.practicum.repositories.EventRepository;
 import ru.practicum.repositories.UserRepository;
 import ru.practicum.services.CommentsAdminService;
-import ru.practicum.util.CommentUtil;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -71,7 +71,10 @@ public class CommentsAdminServiceImp implements CommentsAdminService {
             throw new ResourceNotFoundException("Пользователь c id: " + updateComment.getUserId() + " не найден");
         }
         Comment comment = commentsRepository.get(id);
-        CommentUtil.checkCommentOnEvent(comment, event);
+        if (!comment.getEvent().getId().equals(event.getId())) {
+            throw new ForbiddenEventException("Комментарий с id: " + comment.getId()
+                    + " не принадлежит событию с id: " + event.getId());
+        }
         if (updateComment.getText() != null && !updateComment.getText().isBlank()) {
             comment.setText(updateComment.getText());
         }

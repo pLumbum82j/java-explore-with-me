@@ -39,6 +39,17 @@ public class CommentsMapper {
 
     }
 
+    public Comment updateComment(Long commentId, String text, User user, Event event) {
+        return Comment.builder()
+                .id(commentId)
+                .text(text)
+                .createdOn(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS))
+                .author(user)
+                .event(event)
+                .state(CommentState.UPDATE)
+                .build();
+    }
+
     public CommentState toCommentState(CommentStateDto commentStateDto) {
         if (commentStateDto.name().equals(CommentState.UPDATE.name())) {
             return CommentState.UPDATE;

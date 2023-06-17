@@ -76,6 +76,6 @@ public interface EventRepository extends JpaRepository<Event, Long> {
 
     default Event get(long id) {
         return findById(id).orElseThrow(()
-                -> new ResourceNotFoundException("Комментарий c id:  " + id + " не существует"));
+                -> new ResourceNotFoundException("Событие c id:  " + id + " не существует"));
     }
 }
