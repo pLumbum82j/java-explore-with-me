@@ -6,6 +6,10 @@ import lombok.Value;
 
 import java.time.LocalDateTime;
 
+/**
+ * Модель объекта EventComment Data Transfer Object
+ * (Комментарий к событию)
+ */
 @Value
 @Builder
 public class EventCommentDto {

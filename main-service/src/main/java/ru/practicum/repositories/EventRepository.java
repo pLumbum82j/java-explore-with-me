@@ -7,7 +7,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import ru.practicum.exceptions.ResourceNotFoundException;
 import ru.practicum.models.Category;
-import ru.practicum.models.Comment;
 import ru.practicum.models.Event;
 import ru.practicum.models.enums.EventState;
 

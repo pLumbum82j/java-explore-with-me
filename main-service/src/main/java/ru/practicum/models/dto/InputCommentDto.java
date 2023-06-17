@@ -7,6 +7,10 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+/**
+ * Модель объекта InputComment Data Transfer Object
+ * (Входной комментарий)
+ */
 @Value
 @Builder
 public class InputCommentDto {

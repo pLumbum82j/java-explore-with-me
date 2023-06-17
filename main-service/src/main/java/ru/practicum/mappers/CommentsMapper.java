@@ -6,17 +6,27 @@ import ru.practicum.models.Comment;
 import ru.practicum.models.Event;
 import ru.practicum.models.User;
 import ru.practicum.models.dto.CommentDto;
-import ru.practicum.models.dto.CommentStateDto;
 import ru.practicum.models.dto.InputCommentDto;
 import ru.practicum.models.enums.CommentState;
+import ru.practicum.models.enums.CommentStateDto;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
+/**
+ * Утилитарный класс CommentsMapper для преобразования Comment / InputCommentDto / CommentDto
+ */
 @UtilityClass
 public class CommentsMapper {
 
-
+    /**
+     * Преобразование InputCommentDto в Comment
+     *
+     * @param inputCommentDto Объект InputCommentDto
+     * @param user            Объект user
+     * @param event           Объект event
+     * @return Преобразованный объект Comment
+     */
     public Comment createComment(InputCommentDto inputCommentDto, User user, Event event) {
         return Comment.builder()
                 .text(inputCommentDto.getText())
@@ -27,6 +37,12 @@ public class CommentsMapper {
                 .build();
     }
 
+    /**
+     * Преобразование Comment в CommentDto
+     *
+     * @param comment Объект Comment
+     * @return Преобразованный CommentDto
+     */
     public CommentDto commentToCommentDto(Comment comment) {
         return CommentDto.builder()
                 .id(comment.getId())
@@ -39,6 +55,15 @@ public class CommentsMapper {
 
     }
 
+    /**
+     * Преобразование составных элементов владельца комментария (изменение комментария) в Comment
+     *
+     * @param commentId ID комментария
+     * @param text      Текст комментария
+     * @param user      Объект user
+     * @param event     Объект event
+     * @return Преобразованный Comment
+     */
     public Comment updateComment(Long commentId, String text, User user, Event event) {
         return Comment.builder()
                 .id(commentId)
@@ -50,6 +75,12 @@ public class CommentsMapper {
                 .build();
     }
 
+    /**
+     * Метод определения статуса комментария
+     *
+     * @param commentStateDto Объект CommentStateDto
+     * @return Статус комментария
+     */
     public CommentState toCommentState(CommentStateDto commentStateDto) {
         if (commentStateDto.name().equals(CommentState.UPDATE.name())) {
             return CommentState.UPDATE;
@@ -60,7 +91,7 @@ public class CommentsMapper {
         if (commentStateDto.name().equals(CommentState.CANCELED.name())) {
             return CommentState.CANCELED;
         } else {
-            throw new BadRequestException("Статус не соответствует модификатору доступа");
+            throw new BadRequestException("Статус не соответствует возможному: " + commentStateDto.name());
         }
     }
 }

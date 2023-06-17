@@ -10,6 +10,9 @@ import ru.practicum.models.enums.CommentState;
 
 import java.util.List;
 
+/**
+ * Интерфейс CommentsRepository для обработки запросов к БД
+ */
 public interface CommentsRepository extends JpaRepository<Comment, Long> {
 
     List<Comment> findByEvent(Event event, Pageable pageable);

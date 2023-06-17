@@ -6,7 +6,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.models.dto.CommentDto;
 import ru.practicum.models.dto.InputCommentDto;
-import ru.practicum.models.dto.UpdateCommentAdminDto;
+import ru.practicum.models.dto.UpdateCommentAdmin;
 import ru.practicum.services.CommentsAdminService;
 
 import javax.validation.constraints.Positive;
@@ -70,7 +70,7 @@ public class CommentsAdminController {
      */
     @PatchMapping("/{commentId}")
     CommentDto update(@PathVariable Long commentId,
-                      @Validated @RequestBody UpdateCommentAdminDto updateComment) {
+                      @Validated @RequestBody UpdateCommentAdmin updateComment) {
         return commentsAdminService.update(commentId, updateComment);
     }
 

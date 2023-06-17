@@ -3,7 +3,6 @@ package ru.practicum.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import ru.practicum.exceptions.ResourceNotFoundException;
-import ru.practicum.models.Category;
 import ru.practicum.models.Event;
 import ru.practicum.models.Request;
 import ru.practicum.models.User;

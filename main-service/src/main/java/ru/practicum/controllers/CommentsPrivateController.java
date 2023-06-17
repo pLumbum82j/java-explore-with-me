@@ -22,12 +22,28 @@ public class CommentsPrivateController {
 
     private final CommentsPrivateService commentsPrivateService;
 
+    /**
+     * Метод (эндпоинт) получения комментария по ID комментария и ID пользователя
+     *
+     * @param commentId ID комментария
+     * @param userId    ID пользователя
+     * @return Объект CommentDto
+     */
     @GetMapping("/{commentId}/user/{userId}")
     CommentDto get(@PathVariable Long commentId,
                    @PathVariable Long userId) {
         return commentsPrivateService.get(commentId, userId);
     }
 
+    /**
+     * Метод (эндпоинт) получения списка комментариев по ID события и ID пользователя
+     *
+     * @param eventId ID события
+     * @param userId  ID пользователя
+     * @param from    Количество комментариев, которые нужно пропустить для формирования текущего набора
+     * @param size    Количество комментариев в наборе
+     * @return Список комментариев по событию
+     */
     @GetMapping("/event/{eventId}/user/{userId}")
     List<CommentDto> get(@PathVariable Long eventId,
                          @PathVariable Long userId,
@@ -36,18 +52,37 @@ public class CommentsPrivateController {
         return commentsPrivateService.get(eventId, userId, from, size);
     }
 
+    /**
+     * Метод (эндпоинт) добавления комментария
+     *
+     * @param inputCommentDto Новый комментарий в виде объекта InputCommentDto
+     * @return Добавленный комментарий в виде объекта CommentDto
+     */
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
     CommentDto create(@Validated @RequestBody InputCommentDto inputCommentDto) {
         return commentsPrivateService.create(inputCommentDto);
     }
 
+    /**
+     * Метод (эндпоинт) изменения комментария по ID
+     *
+     * @param commentId       ID комментария
+     * @param inputCommentDto Новый изменённый комментарий в виде объекта InputCommentDto
+     * @return Изменённый комментарий в виде объекта CommentDto
+     */
     @PatchMapping("/{commentId}")
     CommentDto update(@PathVariable Long commentId,
                       @Validated @RequestBody InputCommentDto inputCommentDto) {
         return commentsPrivateService.update(commentId, inputCommentDto);
     }
 
+    /**
+     * Метод (эндпоинт) удаления по ID комментария и ID пользователя
+     *
+     * @param commentId ID комментария
+     * @param userId    ID пользователя
+     */
     @DeleteMapping("/{commentId}/user/{userId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void delete(@PathVariable Long commentId,

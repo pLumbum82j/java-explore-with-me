@@ -6,6 +6,9 @@ import ru.practicum.models.enums.CommentState;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+/**
+ * Модель объекта Comment
+ */
 @Getter
 @Setter
 @Entity

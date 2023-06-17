@@ -6,6 +6,10 @@ import lombok.Value;
 
 import java.time.LocalDateTime;
 
+/**
+ * Модель объекта Comment Data Transfer Object
+ * (Комментарий)
+ */
 @Value
 @Builder
 public class CommentDto {

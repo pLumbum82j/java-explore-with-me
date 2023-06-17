@@ -3,7 +3,7 @@ package ru.practicum.services;
 
 import ru.practicum.models.dto.CommentDto;
 import ru.practicum.models.dto.InputCommentDto;
-import ru.practicum.models.dto.UpdateCommentAdminDto;
+import ru.practicum.models.dto.UpdateCommentAdmin;
 
 import java.util.List;
 
@@ -45,7 +45,7 @@ public interface CommentsAdminService {
      * @param updateComment Новый изменённый комментарий в виде объекта UpdateCommentAdminDto
      * @return Изменённый комментарий в виде объекта CommentDto
      */
-    CommentDto update(Long id, UpdateCommentAdminDto updateComment);
+    CommentDto update(Long id, UpdateCommentAdmin updateComment);
 
     /**
      * Метод удаления комментария по ID

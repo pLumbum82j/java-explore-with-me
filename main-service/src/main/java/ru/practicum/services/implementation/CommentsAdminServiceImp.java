@@ -15,7 +15,7 @@ import ru.practicum.models.Event;
 import ru.practicum.models.User;
 import ru.practicum.models.dto.CommentDto;
 import ru.practicum.models.dto.InputCommentDto;
-import ru.practicum.models.dto.UpdateCommentAdminDto;
+import ru.practicum.models.dto.UpdateCommentAdmin;
 import ru.practicum.repositories.CommentsRepository;
 import ru.practicum.repositories.EventRepository;
 import ru.practicum.repositories.UserRepository;
@@ -65,7 +65,7 @@ public class CommentsAdminServiceImp implements CommentsAdminService {
 
     @Override
     @Transactional
-    public CommentDto update(Long id, UpdateCommentAdminDto updateComment) {
+    public CommentDto update(Long id, UpdateCommentAdmin updateComment) {
         Event event = eventRepository.get(updateComment.getEventId());
         if (!userRepository.existsById(updateComment.getUserId())) {
             throw new ResourceNotFoundException("Пользователь c id: " + updateComment.getUserId() + " не найден");

@@ -8,7 +8,7 @@ import java.util.List;
 
 /**
  * Модель объекта UpdateCompilationRequest
- * (Данные о подборке событий)
+ * (Изменение информации о подборке событий)
  */
 @Builder
 @Value
