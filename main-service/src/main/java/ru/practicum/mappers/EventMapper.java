@@ -98,4 +98,15 @@ public class EventMapper {
                 .views(views)
                 .build();
     }
+
+    public EventCommentDto eventToEventCommentDto(Event event) {
+        return EventCommentDto.builder()
+                .annotation(event.getAnnotation())
+                .category(CategoryMapper.categoryToCategoryDto(event.getCategory()))
+                .eventDate(event.getEventDate())
+                .id(event.getId())
+                .initiator(UserMapper.userToUserShortDto(event.getInitiator()))
+                .title(event.getTitle())
+                .build();
+    }
 }

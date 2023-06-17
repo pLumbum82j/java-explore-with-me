@@ -5,7 +5,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import ru.practicum.exceptions.ResourceNotFoundException;
 import ru.practicum.models.Category;
+import ru.practicum.models.Comment;
 import ru.practicum.models.Event;
 import ru.practicum.models.enums.EventState;
 
@@ -71,4 +73,9 @@ public interface EventRepository extends JpaRepository<Event, Long> {
                                 @Param("size") Integer size);
 
     Optional<Event> findEventByIdAndStateIs(Long id, EventState state);
+
+    default Event get(long id) {
+        return findById(id).orElseThrow(()
+                -> new ResourceNotFoundException("Комментарий c id:  " + id + " не существует"));
+    }
 }
