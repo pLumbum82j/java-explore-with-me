@@ -15,7 +15,7 @@ import javax.validation.constraints.Size;
 @Builder
 public class InputCommentDto {
     @NotBlank(message = "Поле text должно быть заполнено")
-    @Size(max = 7000, message = "Максимальное кол-во символов для описания: 7000")
+    @Size(max = 7000, message = "Максимальное кол-во символов для комментария: 7000")
     String text;
     @NotNull(message = "Поле userId должно быть заполнено")
     Long userId;
