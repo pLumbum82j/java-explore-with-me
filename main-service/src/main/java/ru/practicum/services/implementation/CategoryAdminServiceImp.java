@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.exceptions.ConflictDeleteException;
 import ru.practicum.exceptions.ConflictNameCategoryException;
 import ru.practicum.mappers.CategoryMapper;
+import ru.practicum.mappers.CategoryMapperMapstruct;
 import ru.practicum.models.Category;
 import ru.practicum.models.Event;
 import ru.practicum.models.dto.CategoryDto;
@@ -27,6 +28,7 @@ public class CategoryAdminServiceImp implements CategoryAdminService {
 
     private final CategoryRepository categoryRepository;
     private final EventRepository eventRepository;
+    //private final CategoryMapperMapstruct categoryMapperMapstruct;
 
     @Override
     @Transactional
@@ -34,7 +36,8 @@ public class CategoryAdminServiceImp implements CategoryAdminService {
         Category category = CategoryMapper.newCategoryDtoToCategory(newCategoryDto);
         log.info("Получен запрос на добавление категории с названием: {}", newCategoryDto.getName());
         checkNameCategory(category.getName());
-        return CategoryMapper.categoryToCategoryDto(categoryRepository.save(category));
+        //return CategoryMapper.categoryToCategoryDto(categoryRepository.save(category));
+        return CategoryMapperMapstruct.INSTANCE.toDto(categoryRepository.save(category));
     }
 
     @Override

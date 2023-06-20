@@ -1,6 +1,7 @@
 package ru.practicum.models;
 
 import lombok.*;
+import org.mapstruct.Mapper;
 
 import javax.persistence.*;
 
@@ -11,6 +12,7 @@ import javax.persistence.*;
 @Setter
 @Entity
 @Builder
+@Mapper(componentModel = "spring")
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "categories")

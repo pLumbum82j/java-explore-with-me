@@ -1,6 +1,7 @@
 package ru.practicum.models.dto;
 
 import lombok.*;
+import org.mapstruct.Mapper;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -14,6 +15,7 @@ import javax.validation.constraints.Size;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Mapper(componentModel = "spring")
 public class NewCategoryDto {
     @Size(max = 50, message = "Максимальное кол-во символов для поля name: 50")
     @NotBlank(message = "Поле name не должно быть пустым")
