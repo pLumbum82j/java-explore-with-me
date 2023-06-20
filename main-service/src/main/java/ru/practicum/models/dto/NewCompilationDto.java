@@ -1,7 +1,7 @@
 package ru.practicum.models.dto;
 
-import lombok.Builder;
-import lombok.Value;
+import lombok.*;
+import org.mapstruct.Mapper;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -11,8 +11,12 @@ import java.util.List;
  * Модель объекта NewCompilation Data Transfer Object
  * (Данные для добавления новой подборки событий)
  */
-@Value
 @Builder
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Mapper(componentModel = "spring")
 public class NewCompilationDto {
     List<Long> events;
     boolean pinned;

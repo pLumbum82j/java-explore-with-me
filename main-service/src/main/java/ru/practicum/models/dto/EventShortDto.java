@@ -1,16 +1,22 @@
 package ru.practicum.models.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.Builder;
-import lombok.Value;
+import lombok.*;
+import org.mapstruct.Mapper;
+import org.springframework.stereotype.Component;
 
+import javax.persistence.Entity;
 import java.time.LocalDateTime;
 
 /**
  * Модель объекта EventShort Data Transfer Object
  */
-@Value
 @Builder
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Mapper(componentModel = "spring")
 public class EventShortDto {
     String annotation;
     CategoryDto category;

@@ -12,10 +12,10 @@ import javax.persistence.*;
 @Setter
 @Entity
 @Builder
-@Mapper(componentModel = "spring")
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "categories")
+@Mapper(componentModel = "spring")
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

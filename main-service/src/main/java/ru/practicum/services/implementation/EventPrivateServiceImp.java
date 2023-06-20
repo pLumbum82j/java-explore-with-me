@@ -9,9 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.exceptions.BadRequestException;
 import ru.practicum.exceptions.ConflictRequestException;
 import ru.practicum.exceptions.ForbiddenEventException;
-import ru.practicum.mappers.EventMapper;
-import ru.practicum.mappers.LocationMapper;
-import ru.practicum.mappers.RequestMapper;
+import ru.practicum.mappers.*;
 import ru.practicum.models.Category;
 import ru.practicum.models.Event;
 import ru.practicum.models.Request;
@@ -48,6 +46,11 @@ public class EventPrivateServiceImp implements EventPrivateService {
     private final ProcessingEvents processingEvents;
     private final UserRepository userRepository;
     private final CategoryRepository categoryRepository;
+    private final LocationMapperMupstruct locationMapperMupstruct;
+    private final RequestMapperMupstrict requestMapperMupstrict;
+    private final EventMapperMupstruct eventMapperMupstruct;
+    private final CategoryMapperMapstruct categoryMapperMapstruct;
+    private final UserMapperMapstruct userMapperMapstruct;
 
 
     @Override
@@ -58,7 +61,10 @@ public class EventPrivateServiceImp implements EventPrivateService {
         List<Event> eventsAddViews = processingEvents.addViewsInEventsList(events, request);
         List<Event> newEvents = processingEvents.confirmRequests(eventsAddViews);
         log.info("Получен приватный запрос на получение всех событий для пользователя с id: {}", userId);
-        return newEvents.stream().map(EventMapper::eventToeventShortDto).collect(Collectors.toList());
+        //return newEvents.stream().map(EventMapper::eventToeventShortDto).collect(Collectors.toList());
+        return newEvents.stream().map(e -> eventMapperMupstruct.eventToEventShortDto(e,
+                categoryMapperMapstruct.categoryToCategoryDto(e.getCategory()),
+                userMapperMapstruct.userToUserShortDto(e.getInitiator()))).collect(Collectors.toList());
     }
 
     @Override
@@ -80,9 +86,16 @@ public class EventPrivateServiceImp implements EventPrivateService {
         Category category = categoryRepository.get(tempNewEventDto.getCategory());
         Long views = 0L;
         Long confirmedRequests = 0L;
-        Event event = EventMapper.newEventDtoToCreateEvent(tempNewEventDto, user, category, views, confirmedRequests);
+        //Event event = EventMapper.newEventDtoToCreateEvent(tempNewEventDto, user, category, views, confirmedRequests);
+        Event event = eventMapperMupstruct.newEventDtoToCreateEvent(tempNewEventDto, user, category, views, confirmedRequests,
+                locationMapperMupstruct.locationDtoToLocation(tempNewEventDto.getLocation()), EventState.PENDING,
+                DateFormatter.formatDate(tempNewEventDto.getEventDate()), null);
         log.info("Получен приватный запрос на добавление события пользователем с id: {}", userId);
-        return EventMapper.eventToEventFullDto(eventRepository.save(event));
+        //return EventMapper.eventToEventFullDto(eventRepository.save(event));
+        return eventMapperMupstruct.eventToEventFullDto(eventRepository.save(event),
+                categoryMapperMapstruct.categoryToCategoryDto(event.getCategory()),
+                userMapperMapstruct.userToUserShortDto(event.getInitiator()),
+                locationMapperMupstruct.locationToLocationDto(event.getLocation()));
     }
 
     @Override
@@ -92,7 +105,10 @@ public class EventPrivateServiceImp implements EventPrivateService {
         checkOwnerEvent(event, user);
         addEventConfirmRequestAndSetViews(event, request);
         log.info("Получен приватный запрос на получение события с id: {} для пользователя с id: {}", eventId, userId);
-        return EventMapper.eventToEventFullDto(event);
+        //return EventMapper.eventToEventFullDto(event);
+        return eventMapperMupstruct.eventToEventFullDto(eventRepository.save(event),
+                categoryMapperMapstruct.categoryToCategoryDto(event.getCategory()),
+                userMapperMapstruct.userToUserShortDto(event.getInitiator()), locationMapperMupstruct.locationToLocationDto(event.getLocation()));
     }
 
     @Override
@@ -119,7 +135,8 @@ public class EventPrivateServiceImp implements EventPrivateService {
             event.setEventDate(DateFormatter.formatDate(updateEvent.getEventDate()));
         }
         if (updateEvent.getLocation() != null) {
-            event.setLocation(LocationMapper.locationDtoToLocation(updateEvent.getLocation()));
+            //event.setLocation(LocationMapper.locationDtoToLocation(updateEvent.getLocation()));
+            event.setLocation(locationMapperMupstruct.locationDtoToLocation(updateEvent.getLocation()));
         }
         if (updateEvent.getPaid() != null) {
             event.setPaid(updateEvent.getPaid());
@@ -143,7 +160,10 @@ public class EventPrivateServiceImp implements EventPrivateService {
             event.setConfirmedRequests(0L);
         }
         log.info("Получен приватный запрос на обновление события с id: {} для пользователя с id: {}", eventId, userId);
-        return EventMapper.eventToEventFullDto(eventRepository.save(event));
+        //return EventMapper.eventToEventFullDto(eventRepository.save(event));
+        return eventMapperMupstruct.eventToEventFullDto(eventRepository.save(event),
+                categoryMapperMapstruct.categoryToCategoryDto(event.getCategory()),
+                userMapperMapstruct.userToUserShortDto(event.getInitiator()), locationMapperMupstruct.locationToLocationDto(event.getLocation()));
     }
 
     @Override
@@ -154,7 +174,8 @@ public class EventPrivateServiceImp implements EventPrivateService {
             checkOwnerEvent(event, user);
             List<Request> requests = requestRepository.findAllByEvent(event);
             log.info("Получен приватный запрос на получение всех запросов для события с id: {} для пользователя с id: {}", eventId, userId);
-            return requests.stream().map(RequestMapper::requestToParticipationRequestDto).collect(Collectors.toList());
+            // return requests.stream().map(RequestMapper::requestToParticipationRequestDto).collect(Collectors.toList());
+            return requests.stream().map(requestMapperMupstrict::requestToParticipationRequestDto).collect(Collectors.toList());
         } catch (Exception e) {
             throw new BadRequestException("Некорректный запрос получения списка запросов на участие в текущем событии");
         }
@@ -194,12 +215,12 @@ public class EventPrivateServiceImp implements EventPrivateService {
                 }
                 if (event.getConfirmedRequests() <= event.getParticipantLimit()) {
                     requestList.setStatus(RequestStatus.CONFIRMED);
-                    confirmedRequests.add(RequestMapper.requestToParticipationRequestDto(requestList));
+                    confirmedRequests.add(requestMapperMupstrict.requestToParticipationRequestDto(requestList));
                     requestRepository.save(requestList);
                     event.setConfirmedRequests(event.getConfirmedRequests() + 1L);
                 } else {
                     requestList.setStatus(RequestStatus.REJECTED);
-                    rejectedRequests.add(RequestMapper.requestToParticipationRequestDto(requestList));
+                    rejectedRequests.add(requestMapperMupstrict.requestToParticipationRequestDto(requestList));
                     requestRepository.save(requestList);
                 }
             }
@@ -287,7 +308,7 @@ public class EventPrivateServiceImp implements EventPrivateService {
             }
             requestList.setStatus(RequestStatus.REJECTED);
             requestRepository.save(requestList);
-            rejectedRequests.add(RequestMapper.requestToParticipationRequestDto(requestList));
+            rejectedRequests.add(requestMapperMupstrict.requestToParticipationRequestDto(requestList));
         }
         return rejectedRequests;
     }

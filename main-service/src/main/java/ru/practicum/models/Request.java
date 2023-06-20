@@ -1,6 +1,7 @@
 package ru.practicum.models;
 
 import lombok.*;
+import org.mapstruct.Mapper;
 import ru.practicum.models.enums.RequestStatus;
 
 import javax.persistence.*;
@@ -16,6 +17,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Entity
 @Table(name = "requests")
+@Mapper(componentModel = "spring")
 public class Request {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

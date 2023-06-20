@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.mappers.CompilationMapper;
+import ru.practicum.mappers.CompilationMapperMupstruct;
 import ru.practicum.models.dto.CompilationDto;
 import ru.practicum.repositories.CompilationRepository;
 import ru.practicum.services.CompilationPublicService;
@@ -24,18 +25,21 @@ import java.util.stream.Collectors;
 public class CompilationPublicServiceImp implements CompilationPublicService {
 
     private final CompilationRepository compilationRepository;
+    private final CompilationMapperMupstruct compilationMapperMupstruct;
 
     @Override
     public List<CompilationDto> get(Boolean pinned, int from, int size) {
         Pageable pageable = PageRequest.of(from, size);
         log.info("Получен запрос на поиск всех подборок событий");
         return compilationRepository.findAllByPinnedIs(pinned, pageable).stream()
-                .map(CompilationMapper::compilationToCompilationDto).collect(Collectors.toList());
+       //         .map(CompilationMapper::compilationToCompilationDto).collect(Collectors.toList());
+                .map(compilationMapperMupstruct::ToCompilationDto).collect(Collectors.toList());
     }
 
     @Override
     public CompilationDto get(Long id) {
         log.info("Получен запрос на поиск подборки событий по id: {}", id);
-        return CompilationMapper.compilationToCompilationDto(compilationRepository.get(id));
+       // return CompilationMapper.compilationToCompilationDto(compilationRepository.get(id));
+        return compilationMapperMupstruct.ToCompilationDto(compilationRepository.get(id));
     }
 }

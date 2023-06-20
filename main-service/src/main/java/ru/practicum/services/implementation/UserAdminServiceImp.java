@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.exceptions.BadRequestException;
 import ru.practicum.exceptions.ConflictNameAndEmailException;
 import ru.practicum.mappers.UserMapper;
+import ru.practicum.mappers.UserMapperMapstruct;
 import ru.practicum.models.User;
 import ru.practicum.models.dto.NewUserRequest;
 import ru.practicum.models.dto.UserDto;
@@ -28,6 +29,7 @@ import java.util.stream.Collectors;
 public class UserAdminServiceImp implements UserAdminService {
 
     private final UserRepository userRepository;
+    private final UserMapperMapstruct userMapperMapstruct;
 
     @Override
     @Transactional(readOnly = true)
@@ -36,12 +38,12 @@ public class UserAdminServiceImp implements UserAdminService {
         if (ids == null) {
             log.info("Получен запрос на получение списка пользователей без id");
             return userRepository.findAll(pageable).stream()
-                    .map(UserMapper::userToDto)
+                    .map(userMapperMapstruct::userToDto)
                     .collect(Collectors.toList());
         } else {
             log.info("Получен запрос на получение списка пользователей по id");
             return userRepository.findByIdIn(ids, pageable).stream()
-                    .map(UserMapper::userToDto)
+                    .map(userMapperMapstruct::userToDto)
                     .collect(Collectors.toList());
         }
     }
@@ -49,10 +51,10 @@ public class UserAdminServiceImp implements UserAdminService {
     @Override
     @Transactional
     public UserDto create(NewUserRequest newUserRequest) {
-        User user = UserMapper.newUserRequestToUser(newUserRequest);
+        User user = userMapperMapstruct.newUserRequestToUser(newUserRequest);
         try {
             log.info("Получен запрос на добавление пользователя {}", newUserRequest);
-            return UserMapper.userToDto(userRepository.save(user));
+            return userMapperMapstruct.userToDto(userRepository.save(user));
         } catch (DataIntegrityViolationException e) {
             throw new ConflictNameAndEmailException("E-mail: " + newUserRequest.getEmail() + " или name пользователя: " +
                     newUserRequest.getName() + " уже есть в базе");

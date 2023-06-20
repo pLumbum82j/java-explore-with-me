@@ -1,14 +1,18 @@
 package ru.practicum.models.dto;
 
-import lombok.Builder;
-import lombok.Value;
+import lombok.*;
+import org.mapstruct.Mapper;
 
 /**
  * Модель объекта Location Data Transfer Object
  * (Широта и долгота места проведения события)
  */
-@Value
 @Builder
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Mapper(componentModel = "spring")
 public class LocationDto {
     float lat;
     float lon;

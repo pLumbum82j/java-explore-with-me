@@ -1,18 +1,19 @@
 package ru.practicum.mappers;
 
 import org.mapstruct.Mapper;
-import org.mapstruct.factory.Mappers;
+import org.springframework.stereotype.Service;
 import ru.practicum.models.Category;
 import ru.practicum.models.dto.CategoryDto;
 import ru.practicum.models.dto.NewCategoryDto;
 
+@Service
 @Mapper(componentModel = "spring")
 public interface CategoryMapperMapstruct {
-    CategoryMapperMapstruct INSTANCE = Mappers.getMapper(CategoryMapperMapstruct.class);
+    // CategoryMapperMapstruct INSTANCE = Mappers.getMapper(CategoryMapperMapstruct.class);
 
-    CategoryDto toDto(Category category);
+    CategoryDto categoryToCategoryDto(Category category);
 
-    Category toCategory(CategoryDto categoryDto);
+    Category categoryDtoToCategory(CategoryDto categoryDto);
 
-    Category NewtoCategory(NewCategoryDto newCategoryDto);
+    Category newCategoryDtoToCategory(NewCategoryDto newCategoryDto);
 }

@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.exceptions.BadRequestException;
 import ru.practicum.exceptions.ConflictRequestException;
 import ru.practicum.mappers.RequestMapper;
+import ru.practicum.mappers.RequestMapperMupstrict;
 import ru.practicum.models.Event;
 import ru.practicum.models.Request;
 import ru.practicum.models.User;
@@ -39,13 +40,14 @@ public class RequestPrivateServiceImp implements RequestPrivateService {
     private final EventRepository eventRepository;
     private final ProcessingEvents processingEvents;
     private final UserRepository userRepository;
+    private final RequestMapperMupstrict requestMapperMupstrict;
 
     @Override
     public List<ParticipationRequestDto> get(Long id) {
         User user = userRepository.get(id);
         List<Request> requests = requestRepository.findAllByRequesterIs(user);
         log.info("Получен запрос на получение всех запросов пользователя с id:" + id);
-        return requests.stream().map(RequestMapper::requestToParticipationRequestDto)
+        return requests.stream().map(requestMapperMupstrict::requestToParticipationRequestDto)
                 .collect(Collectors.toList());
     }
 
@@ -83,7 +85,7 @@ public class RequestPrivateServiceImp implements RequestPrivateService {
         try {
             eventRepository.save(event);
             log.info("Получен запрос на добавление запроса от пользователя с id: {} для события id: {}", userId, eventId);
-            return RequestMapper.requestToParticipationRequestDto(requestRepository.save(request));
+            return requestMapperMupstrict.requestToParticipationRequestDto(requestRepository.save(request));
         } catch (DataAccessException e) {
             throw new BadRequestException("Ошибка при работе с базой данных");
         } catch (IllegalArgumentException e) {
@@ -111,7 +113,7 @@ public class RequestPrivateServiceImp implements RequestPrivateService {
         try {
             eventRepository.save(event);
             log.info("Получен запрос на обновление запроса с id: {} от пользователя с id: {}", requestId, userId);
-            return RequestMapper.requestToParticipationRequestDto(requestRepository.save(request));
+            return requestMapperMupstrict.requestToParticipationRequestDto(requestRepository.save(request));
         } catch (DataAccessException e) {
             throw new BadRequestException("Ошибка при работе с базой данных");
         } catch (IllegalArgumentException e) {

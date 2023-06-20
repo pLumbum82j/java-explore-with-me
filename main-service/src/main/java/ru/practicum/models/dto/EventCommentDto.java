@@ -1,8 +1,8 @@
 package ru.practicum.models.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.Builder;
-import lombok.Value;
+import lombok.*;
+import org.mapstruct.Mapper;
 
 import java.time.LocalDateTime;
 
@@ -10,8 +10,12 @@ import java.time.LocalDateTime;
  * Модель объекта EventComment Data Transfer Object
  * (Комментарий к событию)
  */
-@Value
 @Builder
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Mapper(componentModel = "spring")
 public class EventCommentDto {
     String annotation;
     CategoryDto category;

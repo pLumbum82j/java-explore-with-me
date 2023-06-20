@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.exceptions.ConflictDeleteException;
 import ru.practicum.exceptions.ConflictNameCategoryException;
-import ru.practicum.mappers.CategoryMapper;
 import ru.practicum.mappers.CategoryMapperMapstruct;
 import ru.practicum.models.Category;
 import ru.practicum.models.Event;
@@ -28,16 +27,17 @@ public class CategoryAdminServiceImp implements CategoryAdminService {
 
     private final CategoryRepository categoryRepository;
     private final EventRepository eventRepository;
-    //private final CategoryMapperMapstruct categoryMapperMapstruct;
+    private final CategoryMapperMapstruct categoryMapperMapstruct;
 
     @Override
     @Transactional
     public CategoryDto create(NewCategoryDto newCategoryDto) {
-        Category category = CategoryMapper.newCategoryDtoToCategory(newCategoryDto);
+       // Category category = CategoryMapper.newCategoryDtoToCategory(newCategoryDto);
+        Category category = categoryMapperMapstruct.newCategoryDtoToCategory(newCategoryDto);
         log.info("Получен запрос на добавление категории с названием: {}", newCategoryDto.getName());
         checkNameCategory(category.getName());
         //return CategoryMapper.categoryToCategoryDto(categoryRepository.save(category));
-        return CategoryMapperMapstruct.INSTANCE.toDto(categoryRepository.save(category));
+        return categoryMapperMapstruct.categoryToCategoryDto(categoryRepository.save(category));
     }
 
     @Override
@@ -49,7 +49,8 @@ public class CategoryAdminServiceImp implements CategoryAdminService {
             category.setName(categoryDto.getName());
         }
         log.info("Получен запрос на обновлении категории c id: {}", id);
-        return CategoryMapper.categoryToCategoryDto(categoryRepository.save(category));
+        //return CategoryMapper.categoryToCategoryDto(categoryRepository.save(category));
+        return categoryMapperMapstruct.categoryToCategoryDto(categoryRepository.save(category));
     }
 
     @Override

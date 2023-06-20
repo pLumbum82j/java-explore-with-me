@@ -1,14 +1,18 @@
 package ru.practicum.models.dto;
 
-import lombok.Builder;
-import lombok.Value;
+import lombok.*;
+import org.mapstruct.Mapper;
 
 /**
  * Модель объекта User Data Transfer Object
  * (Пользователь)
  */
-@Value
 @Builder
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Mapper(componentModel = "spring")
 public class UserDto {
     String email;
     Long id;

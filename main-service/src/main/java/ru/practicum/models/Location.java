@@ -1,20 +1,24 @@
 package ru.practicum.models;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.mapstruct.Mapper;
 
 import javax.persistence.Embeddable;
 
 /**
  * Модель объекта Location
  */
-@Data
+//@Data
+//@NoArgsConstructor
+//@AllArgsConstructor
+//@Builder
+//@Embeddable
+@Builder
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-@Embeddable
+@Mapper(componentModel = "spring")
 public class Location {
     private float lat;
     private float lon;

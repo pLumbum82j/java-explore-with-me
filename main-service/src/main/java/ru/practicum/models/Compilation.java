@@ -1,6 +1,7 @@
 package ru.practicum.models;
 
 import lombok.*;
+import org.mapstruct.Mapper;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -11,11 +12,12 @@ import java.util.Set;
  */
 @Getter
 @Setter
+@Entity
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
 @Table(name = "compilations")
+@Mapper(componentModel = "spring")
 public class Compilation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

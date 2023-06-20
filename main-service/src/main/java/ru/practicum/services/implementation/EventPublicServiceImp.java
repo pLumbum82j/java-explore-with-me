@@ -9,7 +9,10 @@ import ru.practicum.exceptions.BadRequestException;
 import ru.practicum.exceptions.ResourceNotFoundException;
 import ru.practicum.exp.stat.client.StatsClient;
 import ru.practicum.exp.stat.dto.HitDto;
-import ru.practicum.mappers.EventMapper;
+import ru.practicum.mappers.CategoryMapperMapstruct;
+import ru.practicum.mappers.EventMapperMupstruct;
+import ru.practicum.mappers.LocationMapperMupstruct;
+import ru.practicum.mappers.UserMapperMapstruct;
 import ru.practicum.models.Event;
 import ru.practicum.models.dto.EventFullDto;
 import ru.practicum.models.dto.EventShortDto;
@@ -37,6 +40,11 @@ public class EventPublicServiceImp implements EventPublicService {
     private final EventRepository eventRepository;
     private final ProcessingEvents processingEvents;
     private final StatsClient statsClient;
+    private final EventMapperMupstruct eventMapperMupstruct;
+    private final CategoryMapperMapstruct categoryMapperMapstruct;
+    private final UserMapperMapstruct userMapperMapstruct;
+    private final LocationMapperMupstruct locationMapperMupstruct;
+
     @Value("${app.name}")
     private String appName;
 
@@ -63,9 +71,13 @@ public class EventPublicServiceImp implements EventPublicService {
         log.info("Получен публичный запрос на получение всех событий");
         if (!onlyAvailable) {
             return newEvents.stream().filter(e -> e.getParticipantLimit() >= e.getConfirmedRequests())
-                    .map(EventMapper::eventToeventShortDto).collect(Collectors.toList());
+                    .map(e -> eventMapperMupstruct.eventToEventShortDto(e,
+                            categoryMapperMapstruct.categoryToCategoryDto(e.getCategory()),
+                            userMapperMapstruct.userToUserShortDto(e.getInitiator()))).collect(Collectors.toList());
         }
-        return newEvents.stream().map(EventMapper::eventToeventShortDto).collect(Collectors.toList());
+        return newEvents.stream().map(e -> eventMapperMupstruct.eventToEventShortDto(e,
+                categoryMapperMapstruct.categoryToCategoryDto(e.getCategory()),
+                userMapperMapstruct.userToUserShortDto(e.getInitiator()))).collect(Collectors.toList());
     }
 
     @Override
@@ -84,7 +96,11 @@ public class EventPublicServiceImp implements EventPublicService {
         long views = processingEvents.searchViews(event, request);
         event.setViews(views);
         log.info("Получен публичный запрос на получение события по id: {}", id);
-        return EventMapper.eventToEventFullDto(event);
+        // return EventMapper.eventToEventFullDto(event);
+        return eventMapperMupstruct.eventToEventFullDto(eventRepository.save(event),
+                categoryMapperMapstruct.categoryToCategoryDto(event.getCategory()),
+                userMapperMapstruct.userToUserShortDto(event.getInitiator()),
+                locationMapperMupstruct.locationToLocationDto(event.getLocation()));
     }
 
     /**
