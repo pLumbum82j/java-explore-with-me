@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.mappers.CompilationMapper;
-import ru.practicum.mappers.CompilationMapperMupstruct;
 import ru.practicum.models.Compilation;
 import ru.practicum.models.Event;
 import ru.practicum.models.dto.CompilationDto;
@@ -29,7 +28,6 @@ public class CompilationAdminServiceImp implements CompilationAdminService {
 
     private final CompilationRepository compilationRepository;
     private final EventRepository eventRepository;
-    private final CompilationMapperMupstruct compilationMapperMupstruct;
 
     @Override
     @Transactional
@@ -38,11 +36,9 @@ public class CompilationAdminServiceImp implements CompilationAdminService {
         if (newCompilationDto.getEvents() != null && !newCompilationDto.getEvents().isEmpty()) {
             events = addEvents(newCompilationDto.getEvents());
         }
-       // Compilation compilation = CompilationMapper.newCompilationDtoToCompilationAndEvents(newCompilationDto, events);
-        Compilation compilation = compilationMapperMupstruct.newCompilationDtoToCompilationAndEvents(newCompilationDto, events);
+        Compilation compilation = CompilationMapper.newCompilationDtoToCompilationAndEvents(newCompilationDto, events);
         log.info("Получен запрос на добавление подборки событий: {}", newCompilationDto.getTitle());
-       // return CompilationMapper.compilationToCompilationDto(compilationRepository.save(compilation));
-        return compilationMapperMupstruct.ToCompilationDto(compilationRepository.save(compilation));
+        return CompilationMapper.compilationToCompilationDto(compilationRepository.save(compilation));
     }
 
     @Override
@@ -61,8 +57,7 @@ public class CompilationAdminServiceImp implements CompilationAdminService {
             newCompilation.setTitle(updateCompilationRequest.getTitle());
         }
         log.info("Получен запрос на обновление подборки событий по id: {}", compId);
-       // return CompilationMapper.compilationToCompilationDto(compilationRepository.save(newCompilation));
-        return compilationMapperMupstruct.ToCompilationDto(compilationRepository.save(newCompilation));
+        return CompilationMapper.compilationToCompilationDto(compilationRepository.save(newCompilation));
     }
 
     @Override

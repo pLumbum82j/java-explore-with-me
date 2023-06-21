@@ -1,7 +1,7 @@
 package ru.practicum.models.dto;
 
-import lombok.*;
-import org.mapstruct.Mapper;
+import lombok.Builder;
+import lombok.Value;
 
 import java.util.List;
 
@@ -9,12 +9,8 @@ import java.util.List;
  * Модель объекта Compilation Data Transfer Object
  * (Подборка событий)
  */
+@Value
 @Builder
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Mapper(componentModel = "spring")
 public class CompilationDto {
     List<EventShortDto> events;
     Long id;

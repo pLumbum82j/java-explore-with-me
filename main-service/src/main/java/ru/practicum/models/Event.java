@@ -1,8 +1,6 @@
 package ru.practicum.models;
 
 import lombok.*;
-import org.mapstruct.Mapper;
-import org.springframework.stereotype.Component;
 import ru.practicum.models.enums.EventState;
 
 import javax.persistence.*;
@@ -18,7 +16,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Entity
 @Table(name = "events")
-@Mapper(componentModel = "spring")
 public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

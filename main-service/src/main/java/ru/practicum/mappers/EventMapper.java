@@ -26,7 +26,7 @@ public class EventMapper {
      * @param event Объект Event
      * @return Преобразованный объект EventShortDto
      */
-    public EventShortDto eventToeventShortDto(Event event) {
+    public EventShortDto eventToEventShortDto(Event event) {
         return EventShortDto.builder()
                 .annotation(event.getAnnotation())
                 .category(CategoryMapper.categoryToCategoryDto(event.getCategory()))
@@ -78,7 +78,7 @@ public class EventMapper {
      * @return Преобразованный объект Event
      */
     public Event newEventDtoToCreateEvent(NewEventDto newEventDto, User user, Category category, Long views,
-                                                 Long confirmedRequests) {
+                                          Long confirmedRequests) {
         LocalDateTime dateTime = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
         return Event.builder()
                 .annotation(newEventDto.getAnnotation())

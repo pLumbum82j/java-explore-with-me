@@ -1,7 +1,7 @@
 package ru.practicum.models.dto;
 
-import lombok.*;
-import org.mapstruct.Mapper;
+import lombok.Builder;
+import lombok.Value;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -11,12 +11,8 @@ import javax.validation.constraints.Size;
  * Модель объекта NewUserRequest
  * (Данные для добавления нового пользователя)
  */
+@Value
 @Builder
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Mapper(componentModel = "spring")
 public class NewUserRequest {
     @Email
     @NotBlank(message = "Поле name не должно быть пустым")

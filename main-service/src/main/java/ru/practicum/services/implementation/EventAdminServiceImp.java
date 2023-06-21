@@ -9,7 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.exceptions.BadRequestException;
 import ru.practicum.exceptions.ForbiddenEventException;
 import ru.practicum.exceptions.ResourceNotFoundException;
-import ru.practicum.mappers.*;
+import ru.practicum.mappers.EventMapper;
+import ru.practicum.mappers.LocationMapper;
 import ru.practicum.models.Category;
 import ru.practicum.models.Event;
 import ru.practicum.models.dto.EventFullDto;
@@ -39,11 +40,6 @@ public class EventAdminServiceImp implements EventAdminService {
     private final EventRepository eventRepository;
     private final ProcessingEvents processingEvents;
     private final CategoryRepository categoryRepository;
-    private final LocationMapperMupstruct locationMapperMupstruct;
-    private final EventMapperMupstruct eventMapperMupstruct;
-    private final CategoryMapperMapstruct categoryMapperMapstruct;
-    private final UserMapperMapstruct userMapperMapstruct;
-
 
     @Override
     public List<EventFullDto> get(List<Long> users, List<String> states, List<Long> categories,
@@ -63,20 +59,12 @@ public class EventAdminServiceImp implements EventAdminService {
             events = eventRepository.findAllByAdmin(users, states, categories, newRangeStart, newRangeEnd, from, size);
             List<Event> eventsAddViews = processingEvents.addViewsInEventsList(events, request);
             List<Event> newEvents = processingEvents.confirmRequests(eventsAddViews);
-            //return newEvents.stream().map(EventMapper::eventToEventFullDto).collect(Collectors.toList());
-            return newEvents.stream().map(e -> eventMapperMupstruct.eventToEventFullDto(e,
-                    categoryMapperMapstruct.categoryToCategoryDto(e.getCategory()),
-                    userMapperMapstruct.userToUserShortDto(e.getInitiator()),
-                    locationMapperMupstruct.locationToLocationDto(e.getLocation()))).collect(Collectors.toList());
+            return newEvents.stream().map(EventMapper::eventToEventFullDto).collect(Collectors.toList());
         } else {
             events = eventRepository.findAllByAdminAndState(users, null, categories, newRangeStart, newRangeEnd, page);
             List<Event> eventsAddViews = processingEvents.addViewsInEventsList(events, request);
             List<Event> newEvents = processingEvents.confirmRequests(eventsAddViews);
-            //return newEvents.stream().map(EventMapper::eventToEventFullDto).collect(Collectors.toList());
-            return newEvents.stream().map(e -> eventMapperMupstruct.eventToEventFullDto(e,
-                    categoryMapperMapstruct.categoryToCategoryDto(e.getCategory()),
-                    userMapperMapstruct.userToUserShortDto(e.getInitiator()),
-                    locationMapperMupstruct.locationToLocationDto(e.getLocation()))).collect(Collectors.toList());
+            return newEvents.stream().map(EventMapper::eventToEventFullDto).collect(Collectors.toList());
         }
     }
 
@@ -102,8 +90,7 @@ public class EventAdminServiceImp implements EventAdminService {
             event.setEventDate(DateFormatter.formatDate(updateEvent.getEventDate()));
         }
         if (updateEvent.getLocation() != null) {
-            //event.setLocation(LocationMapper.locationDtoToLocation(updateEvent.getLocation()));
-            event.setLocation(locationMapperMupstruct.locationDtoToLocation(updateEvent.getLocation()));
+            event.setLocation(LocationMapper.locationDtoToLocation(updateEvent.getLocation()));
         }
         if (updateEvent.getPaid() != null) {
             event.setPaid(updateEvent.getPaid());
@@ -134,10 +121,7 @@ public class EventAdminServiceImp implements EventAdminService {
         }
         try {
             log.info("Получен запрос от администратора на обновление события с id: {}", eventId);
-            return eventMapperMupstruct.eventToEventFullDto(eventRepository.save(event),
-                    categoryMapperMapstruct.categoryToCategoryDto(event.getCategory()),
-                    userMapperMapstruct.userToUserShortDto(event.getInitiator()),
-                    locationMapperMupstruct.locationToLocationDto(event.getLocation()));
+            return EventMapper.eventToEventFullDto(eventRepository.save(event));
         } catch (DataAccessException e) {
             throw new ResourceNotFoundException("База данных недоступна");
         } catch (Exception e) {

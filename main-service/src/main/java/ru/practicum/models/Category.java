@@ -1,7 +1,6 @@
 package ru.practicum.models;
 
 import lombok.*;
-import org.mapstruct.Mapper;
 
 import javax.persistence.*;
 
@@ -15,7 +14,6 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "categories")
-@Mapper(componentModel = "spring")
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

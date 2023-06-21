@@ -1,7 +1,7 @@
 package ru.practicum.models.dto;
 
-import lombok.*;
-import org.mapstruct.Mapper;
+import lombok.Builder;
+import lombok.Value;
 
 import javax.validation.constraints.*;
 
@@ -9,12 +9,8 @@ import javax.validation.constraints.*;
  * Модель объекта NewEvent Data Transfer Object
  * (Данные для добавления нового события)
  */
+@Value
 @Builder
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Mapper(componentModel = "spring")
 public class NewEventDto {
     @NotBlank(message = "Поле annotation должно быть заполнено")
     @Size(min = 20, max = 2000, message = "Минимальное кол-во символов для описания: 20. Максимальное: 2000")

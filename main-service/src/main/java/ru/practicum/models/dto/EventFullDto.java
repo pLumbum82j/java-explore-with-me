@@ -1,21 +1,16 @@
 package ru.practicum.models.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.*;
-import org.mapstruct.Mapper;
-import org.springframework.stereotype.Component;
+import lombok.Builder;
+import lombok.Value;
 
 import java.time.LocalDateTime;
 
 /**
  * Модель объекта EventFull Data Transfer Object
  */
+@Value
 @Builder
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Mapper(componentModel = "spring")
 public class EventFullDto {
     String annotation;
     CategoryDto category;
