@@ -11,10 +11,10 @@ import java.util.Set;
  */
 @Getter
 @Setter
+@Entity
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
 @Table(name = "compilations")
 public class Compilation {
     @Id
