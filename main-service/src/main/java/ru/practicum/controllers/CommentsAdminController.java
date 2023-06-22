@@ -68,9 +68,9 @@ public class CommentsAdminController {
      * @param updateComment Новый изменённый комментарий в виде объекта UpdateCommentAdminDto
      * @return Изменённый комментарий в виде объекта CommentDto
      */
-    public @PatchMapping("/{commentId}")
-    CommentDto update(@PathVariable Long commentId,
-                      @Validated @RequestBody UpdateCommentAdmin updateComment) {
+    @PatchMapping("/{commentId}")
+    public CommentDto update(@PathVariable Long commentId,
+                             @Validated @RequestBody UpdateCommentAdmin updateComment) {
         return commentsAdminService.update(commentId, updateComment);
     }
 
@@ -80,8 +80,8 @@ public class CommentsAdminController {
      * @param commentId ID комментария
      */
     @DeleteMapping("/{commentId}")
-    public @ResponseStatus(HttpStatus.NO_CONTENT)
-    void delete(@PathVariable Long commentId) {
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable Long commentId) {
         commentsAdminService.delete(commentId);
     }
 }
