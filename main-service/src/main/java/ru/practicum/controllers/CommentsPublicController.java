@@ -28,9 +28,9 @@ public class CommentsPublicController {
      * @return Список комментариев по событию
      */
     @GetMapping()
-    List<CommentDto> get(@PathVariable Long eventId,
-                         @PositiveOrZero @RequestParam(defaultValue = "0") Integer from,
-                         @Positive @RequestParam(defaultValue = "10") Integer size) {
+    public List<CommentDto> get(@PathVariable Long eventId,
+                                @PositiveOrZero @RequestParam(defaultValue = "0") Integer from,
+                                @Positive @RequestParam(defaultValue = "10") Integer size) {
         return commentsPublicService.get(eventId, from, size);
     }
 }

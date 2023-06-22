@@ -30,8 +30,8 @@ public class CommentsPrivateController {
      * @return Объект CommentDto
      */
     @GetMapping("/{commentId}/user/{userId}")
-    CommentDto get(@PathVariable Long commentId,
-                   @PathVariable Long userId) {
+    public CommentDto get(@PathVariable Long commentId,
+                          @PathVariable Long userId) {
         return commentsPrivateService.get(commentId, userId);
     }
 
@@ -45,10 +45,10 @@ public class CommentsPrivateController {
      * @return Список комментариев по событию
      */
     @GetMapping("/event/{eventId}/user/{userId}")
-    List<CommentDto> get(@PathVariable Long eventId,
-                         @PathVariable Long userId,
-                         @PositiveOrZero @RequestParam(defaultValue = "0") Integer from,
-                         @Positive @RequestParam(defaultValue = "10") Integer size) {
+    public List<CommentDto> get(@PathVariable Long eventId,
+                                @PathVariable Long userId,
+                                @PositiveOrZero @RequestParam(defaultValue = "0") Integer from,
+                                @Positive @RequestParam(defaultValue = "10") Integer size) {
         return commentsPrivateService.get(eventId, userId, from, size);
     }
 
@@ -60,7 +60,7 @@ public class CommentsPrivateController {
      */
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    CommentDto create(@Validated @RequestBody InputCommentDto inputCommentDto) {
+    public CommentDto create(@Validated @RequestBody InputCommentDto inputCommentDto) {
         return commentsPrivateService.create(inputCommentDto);
     }
 
@@ -72,8 +72,8 @@ public class CommentsPrivateController {
      * @return Изменённый комментарий в виде объекта CommentDto
      */
     @PatchMapping("/{commentId}")
-    CommentDto update(@PathVariable Long commentId,
-                      @Validated @RequestBody InputCommentDto inputCommentDto) {
+    public CommentDto update(@PathVariable Long commentId,
+                             @Validated @RequestBody InputCommentDto inputCommentDto) {
         return commentsPrivateService.update(commentId, inputCommentDto);
     }
 
@@ -85,8 +85,8 @@ public class CommentsPrivateController {
      */
     @DeleteMapping("/{commentId}/user/{userId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void delete(@PathVariable Long commentId,
-                @PathVariable Long userId) {
+    public void delete(@PathVariable Long commentId,
+                       @PathVariable Long userId) {
         commentsPrivateService.delete(commentId, userId);
     }
 }

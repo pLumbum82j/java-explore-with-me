@@ -30,7 +30,7 @@ public class CommentsAdminController {
      * @return Объект CommentDto
      */
     @GetMapping("/{commentId}")
-    CommentDto get(@PathVariable Long commentId) {
+    public CommentDto get(@PathVariable Long commentId) {
         return commentsAdminService.get(commentId);
     }
 
@@ -43,9 +43,9 @@ public class CommentsAdminController {
      * @return Список комментариев по событию
      */
     @GetMapping("/event/{eventId}")
-    List<CommentDto> get(@PathVariable Long eventId,
-                         @PositiveOrZero @RequestParam(defaultValue = "0") Integer from,
-                         @Positive @RequestParam(defaultValue = "10") Integer size) {
+    public List<CommentDto> get(@PathVariable Long eventId,
+                                @PositiveOrZero @RequestParam(defaultValue = "0") Integer from,
+                                @Positive @RequestParam(defaultValue = "10") Integer size) {
         return commentsAdminService.get(eventId, from, size);
     }
 
@@ -57,7 +57,7 @@ public class CommentsAdminController {
      */
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    CommentDto create(@Validated @RequestBody InputCommentDto inputCommentDto) {
+    public CommentDto create(@Validated @RequestBody InputCommentDto inputCommentDto) {
         return commentsAdminService.create(inputCommentDto);
     }
 
@@ -68,7 +68,7 @@ public class CommentsAdminController {
      * @param updateComment Новый изменённый комментарий в виде объекта UpdateCommentAdminDto
      * @return Изменённый комментарий в виде объекта CommentDto
      */
-    @PatchMapping("/{commentId}")
+    public @PatchMapping("/{commentId}")
     CommentDto update(@PathVariable Long commentId,
                       @Validated @RequestBody UpdateCommentAdmin updateComment) {
         return commentsAdminService.update(commentId, updateComment);
@@ -80,7 +80,7 @@ public class CommentsAdminController {
      * @param commentId ID комментария
      */
     @DeleteMapping("/{commentId}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public @ResponseStatus(HttpStatus.NO_CONTENT)
     void delete(@PathVariable Long commentId) {
         commentsAdminService.delete(commentId);
     }
